@@ -1,0 +1,144 @@
+import { useState } from 'react'
+import type { FormEvent } from 'react'
+import { Link } from 'react-router-dom'
+import { supabase } from '../lib/supabaseClient'
+import { useRestaurant } from '../lib/useRestaurant'
+import './ReservationPage.css'
+
+export function ReservationPage() {
+  const { restaurant, loading, error } = useRestaurant()
+
+  const [customerName, setCustomerName] = useState('')
+  const [customerEmail, setCustomerEmail] = useState('')
+  const [customerPhone, setCustomerPhone] = useState('')
+  const [partySize, setPartySize] = useState(2)
+  const [reservationDate, setReservationDate] = useState('')
+  const [reservationTime, setReservationTime] = useState('')
+  const [notes, setNotes] = useState('')
+
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitted, setSubmitted] = useState(false)
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+    if (!restaurant) return
+
+    setSubmitting(true)
+    setSubmitError(null)
+
+    const { error } = await supabase.from('reservations').insert({
+      restaurant_id: restaurant.id,
+      customer_name: customerName,
+      customer_email: customerEmail || null,
+      customer_phone: customerPhone || null,
+      party_size: partySize,
+      reservation_date: reservationDate,
+      reservation_time: reservationTime,
+      notes: notes || null,
+    })
+
+    setSubmitting(false)
+
+    if (error) setSubmitError(error.message)
+    else setSubmitted(true)
+  }
+
+  if (error) return <p>Error al conectar con Supabase: {error}</p>
+  if (loading || !restaurant) return <p>Cargando...</p>
+
+  if (submitted) {
+    return (
+      <main className="reservation-page">
+        <h1>¡Reserva enviada!</h1>
+        <p>
+          Hemos recibido tu solicitud para {restaurant.name}. Te confirmaremos
+          la reserva lo antes posible.
+        </p>
+        <Link to="/">Volver al inicio</Link>
+      </main>
+    )
+  }
+
+  return (
+    <main className="reservation-page">
+      <h1>Reservar mesa en {restaurant.name}</h1>
+
+      <form onSubmit={handleSubmit} className="reservation-form">
+        <label>
+          Nombre *
+          <input
+            type="text"
+            required
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Email
+          <input
+            type="email"
+            value={customerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Teléfono
+          <input
+            type="tel"
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Nº de comensales *
+          <input
+            type="number"
+            min={1}
+            required
+            value={partySize}
+            onChange={(e) => setPartySize(Number(e.target.value))}
+          />
+        </label>
+
+        <label>
+          Fecha *
+          <input
+            type="date"
+            required
+            value={reservationDate}
+            onChange={(e) => setReservationDate(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Hora *
+          <input
+            type="time"
+            required
+            value={reservationTime}
+            onChange={(e) => setReservationTime(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Notas
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            rows={3}
+          />
+        </label>
+
+        {submitError && <p className="reservation-error">{submitError}</p>}
+
+        <button type="submit" disabled={submitting}>
+          {submitting ? 'Enviando...' : 'Reservar'}
+        </button>
+      </form>
+    </main>
+  )
+}
