@@ -10,3 +10,4 @@ No hay ejecución automática todavía: cuando aparezca un archivo nuevo aquí, 
 |---|---|---|
 | `0001_initial_schema.sql` | Tablas `restaurants`, `restaurant_users`, `reservations` + RLS | ✅ 2026-07-20 |
 | `0002_seed_restaurant.sql` | Alta de Asador Gonsastrez | ✅ 2026-07-20 |
+| `0003_link_owner.sql` | Vincula el usuario owner a Asador Gonsastrez | ⏳ pendiente (crear el usuario en Auth antes de ejecutar) |
