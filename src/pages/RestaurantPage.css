@@ -8,7 +8,7 @@
 .landing-cta h2 {
   font-family: 'Georgia', serif;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
-  margin: 0 0 0.5rem;
+  margin: 0 0 2rem;
 }
 
 .landing-cta p {

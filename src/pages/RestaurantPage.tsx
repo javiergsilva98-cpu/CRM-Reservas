@@ -26,8 +26,7 @@ export function RestaurantPage() {
       <MenuSection />
 
       <section className="landing-cta">
-        <h2>¿Te apetece venir?</h2>
-        <p>Resérvate una mesa en un minuto.</p>
+        <h2>Reserva en un minuto</h2>
         <Link className="landing-cta-button" to={`/${slug}/reservar`}>
           Reservar mesa
         </Link>
