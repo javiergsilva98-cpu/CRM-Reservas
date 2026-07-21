@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { useRestaurant } from '../lib/useRestaurant'
-import { ScrollDoorHero } from '../components/ScrollDoorHero'
+import { ScrollVideoHero } from '../components/ScrollVideoHero'
 import { MenuSection } from '../components/MenuSection'
 import './RestaurantPage.css'
 
@@ -16,9 +16,11 @@ export function RestaurantPage() {
 
   return (
     <main>
-      <ScrollDoorHero
+      <ScrollVideoHero
         title={restaurant.name}
         tagline="Cocina de brasa y tradición, en el corazón de la ciudad"
+        videoSrc="/video/hero-asador-gonsastrez.mp4"
+        posterSrc="/video/hero-asador-gonsastrez-poster.jpg"
       />
 
       <MenuSection />
