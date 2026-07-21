@@ -30,15 +30,32 @@ export function ReservationPage() {
     setSubmitting(true)
     setSubmitError(null)
 
+    const { data: customerId, error: customerError } = await supabase.rpc(
+      'find_or_create_customer',
+      {
+        p_restaurant_id: restaurant.id,
+        p_first_name: customerName,
+        p_phone: customerPhone || null,
+        p_email: customerEmail || null,
+      },
+    )
+
+    if (customerError) {
+      console.error(customerError)
+      setSubmitError(
+        'No hemos podido enviar tu reserva. Inténtalo de nuevo en unos minutos.',
+      )
+      setSubmitting(false)
+      return
+    }
+
     const { error } = await supabase.from('reservations').insert({
       restaurant_id: restaurant.id,
-      customer_name: customerName,
-      customer_email: customerEmail || null,
-      customer_phone: customerPhone || null,
+      customer_id: customerId,
       party_size: partySize,
       reservation_date: reservationDate,
       reservation_time: reservationTime,
-      notes: notes || null,
+      customer_notes: notes || null,
     })
 
     setSubmitting(false)

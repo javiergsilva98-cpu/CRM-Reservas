@@ -11,6 +11,8 @@ import { TablesPage } from './pages/crm/TablesPage'
 import { HoursPage } from './pages/crm/HoursPage'
 import { AvailabilityPage } from './pages/crm/AvailabilityPage'
 import { AnalyticsPage } from './pages/crm/AnalyticsPage'
+import { CustomersPage } from './pages/crm/CustomersPage'
+import { CustomerDetailPage } from './pages/crm/CustomerDetailPage'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
 function App() {
@@ -75,6 +77,22 @@ function App() {
           element={
             <ProtectedRoute>
               <AnalyticsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/clientes"
+          element={
+            <ProtectedRoute>
+              <CustomersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/clientes/:customerId"
+          element={
+            <ProtectedRoute>
+              <CustomerDetailPage />
             </ProtectedRoute>
           }
         />

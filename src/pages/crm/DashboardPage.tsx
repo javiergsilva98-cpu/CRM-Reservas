@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
 import { CrmLayout } from '../../components/CrmLayout'
 import {
   RESERVATION_STATUS_LABELS,
-  type Reservation,
   type ReservationStatus,
+  type ReservationWithCustomer,
 } from '../../types'
 import './DashboardPage.css'
 
@@ -15,7 +15,7 @@ export function DashboardPage() {
   const { restaurant, loading: loadingRestaurant, error: restaurantError } =
     useRestaurant(slug ?? '')
 
-  const [reservations, setReservations] = useState<Reservation[]>([])
+  const [reservations, setReservations] = useState<ReservationWithCustomer[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -50,7 +50,7 @@ export function DashboardPage() {
     setLoading(true)
     const { data, error } = await supabase
       .from('reservations')
-      .select('*')
+      .select('*, customers(id, first_name, last_name, phone, email)')
       .eq('restaurant_id', restaurantId)
       .order('reservation_date', { ascending: true })
       .order('reservation_time', { ascending: true })
@@ -103,7 +103,8 @@ export function DashboardPage() {
                   <th>Cliente</th>
                   <th>Personas</th>
                   <th>Contacto</th>
-                  <th>Notas</th>
+                  <th>Notas cliente</th>
+                  <th>Notas internas</th>
                   <th>Estado</th>
                 </tr>
               </thead>
@@ -112,13 +113,22 @@ export function DashboardPage() {
                   <tr key={r.id}>
                     <td>{r.reservation_date}</td>
                     <td>{r.reservation_time}</td>
-                    <td>{r.customer_name}</td>
+                    <td>
+                      {r.customers ? (
+                        <Link to={`/${slug}/crm/clientes/${r.customers.id}`}>
+                          {r.customers.first_name} {r.customers.last_name}
+                        </Link>
+                      ) : (
+                        '—'
+                      )}
+                    </td>
                     <td>{r.party_size}</td>
                     <td>
-                      {r.customer_phone && <div>{r.customer_phone}</div>}
-                      {r.customer_email && <div>{r.customer_email}</div>}
+                      {r.customers?.phone && <div>{r.customers.phone}</div>}
+                      {r.customers?.email && <div>{r.customers.email}</div>}
                     </td>
-                    <td>{r.notes}</td>
+                    <td>{r.customer_notes}</td>
+                    <td>{r.internal_notes}</td>
                     <td>
                       <select
                         value={r.status}

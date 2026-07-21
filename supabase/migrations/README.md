@@ -14,5 +14,7 @@ No hay ejecución automática todavía: cuando aparezca un archivo nuevo aquí, 
 | `0004_platform_admins.sql` | Tabla de superadmins de la plataforma + acceso total a `restaurants` | ✅ 2026-07-21 (tabla creada; pendiente confirmar que el insert vinculó al usuario) |
 | `0005_owner_signup.sql` | Columna `owner_email` + auto-registro de dueños (email+contraseña) | ✅ 2026-07-21 |
 | `0006_platform_admin_reservations.sql` | Los superadmins ven/gestionan reservas de cualquier restaurante | ✅ 2026-07-21 |
-| `0007_tables.sql` | Funciones `is_platform_admin`/`is_staff_of` + tabla `restaurant_tables` (mesas) | ⏳ pendiente |
-| `0008_hours.sql` | Tabla `restaurant_hours` (horario de apertura por día) | ⏳ pendiente |
+| `0007_tables.sql` | Funciones `is_platform_admin`/`is_staff_of` + tabla `restaurant_tables` (mesas) | ✅ 2026-07-21 |
+| `0008_hours.sql` | Tabla `restaurant_hours` (horario de apertura por día) | ✅ 2026-07-21 |
+| `0009_customers.sql` | Tabla `customers` (CRM) + función `find_or_create_customer` | ⏳ pendiente |
+| `0010_reservations_customer_link.sql` | Vincula `reservations.customer_id`, separa notas cliente/internas, migra datos de contacto existentes a `customers` | ⏳ pendiente (ejecutar *después* de `0009`) |

@@ -1,0 +1,97 @@
+.customer-detail-page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.customer-detail-page h1 {
+  font-family: 'Georgia', serif;
+  margin: 0 0 2rem;
+}
+
+.customer-detail-page h2 {
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
+  margin: 2.5rem 0 1rem;
+}
+
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.customer-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.1rem;
+}
+
+.customer-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #2c1b10;
+}
+
+.customer-form input,
+.customer-form textarea {
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+}
+
+.customer-checkbox {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.5rem !important;
+}
+
+.customer-checkbox input {
+  width: auto;
+}
+
+.customer-metrics {
+  font-size: 0.85rem;
+  color: #5a4633;
+}
+
+.customer-form button {
+  align-self: flex-start;
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #2c1b10;
+  color: #f6ead9;
+  cursor: pointer;
+}
+
+.customer-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.customer-saved {
+  margin-left: 1rem;
+  color: #2e7d32;
+  font-size: 0.9rem;
+}
+
+.customer-reservations-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.customer-reservations-table th,
+.customer-reservations-table td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e5d9c7;
+}
+
+.dashboard-error {
+  color: #b3261e;
+}

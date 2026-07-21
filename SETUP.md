@@ -4,25 +4,20 @@
 
 - ✅ Claves de Supabase copiadas y conectadas (`.env.local` local + variables en Vercel).
 - ✅ Deploy en Vercel: https://crm-reservas.vercel.app/
-- ✅ Migraciones `0001` a `0006` (esquema base, superadmin, registro de dueños con contraseña).
+- ✅ Migraciones `0001` a `0008` (esquema base, superadmin, registro de dueños, mesas, horarios).
 - ✅ Tu cuenta (`javiergsilva98@gmail.com`) creada, vinculada como owner de Asador Gonsastrez y como superadmin.
+- ✅ CRM con Reservas, Nueva reserva, Disponibilidad, Mesas, Horarios y Analítica.
 
-## Pendiente ahora
+## Pendiente ahora — importante, cambia el modelo de datos
 
-### Ejecutar las migraciones `0007` y `0008`
+### Ejecutar `0009` y `0010`, en ese orden exacto
 
-En el SQL Editor de Supabase, pega y ejecuta (en este orden):
+1. `supabase/migrations/0009_customers.sql` — crea la tabla `customers` (el CRM de clientes de verdad: alergias, dieta, tags, GDPR...) y la función que usa el formulario público para dar de alta/deduplicar clientes sin exponer la tabla entera.
+2. `supabase/migrations/0010_reservations_customer_link.sql` — vincula las reservas a `customers`, separa "notas del cliente" de "notas internas", y **migra automáticamente los datos de contacto que ya tenías sueltos en `reservations`** hacia la nueva tabla `customers` (sin perder nada).
 
-1. `supabase/migrations/0007_tables.sql` — añade la tabla de mesas (`restaurant_tables`) y unas funciones de ayuda para las políticas de seguridad.
-2. `supabase/migrations/0008_hours.sql` — añade la tabla de horarios de apertura (`restaurant_hours`).
+**Ejecuta primero `0009` y espera a que termine antes de lanzar `0010`** — el segundo depende de que exista la función del primero.
 
-Después de eso, ya deberías poder usar dentro del CRM (`https://crm-reservas.vercel.app/asador-gonsastrez/crm`):
-
-- **Mesas**: dar de alta las mesas del restaurante y su capacidad.
-- **Horarios**: configurar qué días abre y en qué horario.
-- **+ Nueva reserva**: añadir a mano una reserva recibida por teléfono u otra vía.
-- **Disponibilidad**: ver aforo total vs reservado para los próximos 14 días.
-- **Analítica**: gráfico de reservas por día (últimos 30 días).
+Después de esto, en el CRM aparece una pestaña nueva **Clientes** con el listado y la ficha de cada uno (editable: alergias, dieta, tags, notas privadas, GDPR marketing) y el historial de reservas de cada cliente.
 
 ---
 

@@ -17,11 +17,12 @@ export function NewReservationPage() {
 
   const [customerName, setCustomerName] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
+  const [customerEmail, setCustomerEmail] = useState('')
   const [partySize, setPartySize] = useState(2)
   const [reservationDate, setReservationDate] = useState(today)
   const [reservationTime, setReservationTime] = useState('')
   const [status, setStatus] = useState<ReservationStatus>('confirmed')
-  const [notes, setNotes] = useState('')
+  const [internalNotes, setInternalNotes] = useState('')
 
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -33,15 +34,30 @@ export function NewReservationPage() {
     setSubmitting(true)
     setError(null)
 
+    const { data: customerId, error: customerError } = await supabase.rpc(
+      'find_or_create_customer',
+      {
+        p_restaurant_id: restaurant.id,
+        p_first_name: customerName,
+        p_phone: customerPhone || null,
+        p_email: customerEmail || null,
+      },
+    )
+
+    if (customerError) {
+      setError(customerError.message)
+      setSubmitting(false)
+      return
+    }
+
     const { error } = await supabase.from('reservations').insert({
       restaurant_id: restaurant.id,
-      customer_name: customerName,
-      customer_phone: customerPhone || null,
+      customer_id: customerId,
       party_size: partySize,
       reservation_date: reservationDate,
       reservation_time: reservationTime,
       status,
-      notes: notes || null,
+      internal_notes: internalNotes || null,
     })
 
     setSubmitting(false)
@@ -78,6 +94,15 @@ export function NewReservationPage() {
               type="tel"
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
+            />
+          </label>
+
+          <label>
+            Email
+            <input
+              type="email"
+              value={customerEmail}
+              onChange={(e) => setCustomerEmail(e.target.value)}
             />
           </label>
 
@@ -130,10 +155,10 @@ export function NewReservationPage() {
           </label>
 
           <label>
-            Notas
+            Notas internas
             <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              value={internalNotes}
+              onChange={(e) => setInternalNotes(e.target.value)}
               rows={3}
             />
           </label>
