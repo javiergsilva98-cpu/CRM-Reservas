@@ -37,7 +37,7 @@ export function RestaurantPage() {
         posterSrc="/video/cta-scrub-asador-gonsastrez-poster-v2.jpg"
         revealStart={0.75}
         revealEnd={0.9}
-        startFraction={0.5}
+        startFraction={0.25}
       >
         <h2 className="scrub-cta-heading">Reserva en un minuto</h2>
         <Link className="landing-cta-button" to={`/${slug}/reservar`}>
