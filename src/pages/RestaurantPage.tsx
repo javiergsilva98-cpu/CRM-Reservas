@@ -32,9 +32,9 @@ export function RestaurantPage() {
         </p>
       </ScrollScrubVideo>
 
-      <MenuSection />
-
       <RecommendedCarousel platos={platosRecomendados} />
+
+      <MenuSection />
 
       <ScrollScrubVideo
         videoSrc="/video/cta-scrub-asador-gonsastrez-v2.mp4"
