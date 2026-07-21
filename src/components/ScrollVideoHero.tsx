@@ -11,6 +11,12 @@ interface ScrollVideoHeroProps {
 const LERP_FACTOR = 0.22
 const MIN_SEEK_DELTA = 1 / 90
 
+// Fracción del scroll en la que la puerta empieza/termina de abrirse en el
+// vídeo (medido sobre el clip: ~4.0s-5.0s de los ~8.93s totales). El texto
+// aparece justo en esa ventana.
+const TEXT_REVEAL_START = 0.45
+const TEXT_REVEAL_END = 0.58
+
 export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollVideoHeroProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -19,6 +25,11 @@ export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollV
   const primedRef = useRef(false)
   const [progress, setProgress] = useState(0)
   const [ready, setReady] = useState(false)
+
+  const textReveal = Math.min(
+    1,
+    Math.max(0, (progress - TEXT_REVEAL_START) / (TEXT_REVEAL_END - TEXT_REVEAL_START)),
+  )
 
   useEffect(() => {
     const video = videoRef.current
@@ -107,7 +118,13 @@ export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollV
         </div>
         <div className="video-hero-overlay" />
 
-        <div className="video-hero-content">
+        <div
+          className="video-hero-content"
+          style={{
+            opacity: textReveal,
+            filter: `blur(${(1 - textReveal) * 10}px)`,
+          }}
+        >
           <p className="video-hero-eyebrow">Bienvenido a</p>
           <h1>{title}</h1>
           {tagline && <p className="video-hero-tagline">{tagline}</p>}
