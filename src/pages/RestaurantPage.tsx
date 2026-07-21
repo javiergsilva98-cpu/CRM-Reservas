@@ -43,14 +43,14 @@ export function RestaurantPage() {
         <Link className="landing-cta-button" to={`/${slug}/reservar`}>
           Reservar mesa
         </Link>
-      </ScrollScrubVideo>
 
-      <section className="landing-contact-section">
-        <div className="landing-contact">
-          {restaurant.address && <p>{restaurant.address}</p>}
-          {restaurant.phone && <p>Tel: {restaurant.phone}</p>}
-        </div>
-      </section>
+        {(restaurant.address || restaurant.phone) && (
+          <div className="scrub-cta-contact">
+            {restaurant.address && <p>{restaurant.address}</p>}
+            {restaurant.phone && <p>Tel: {restaurant.phone}</p>}
+          </div>
+        )}
+      </ScrollScrubVideo>
     </main>
   )
 }
