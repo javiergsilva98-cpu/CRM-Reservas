@@ -1,23 +1,28 @@
 import { useEffect, useRef, useState } from 'react'
-import './ScrollVideoHero.css'
+import type { ReactNode } from 'react'
+import './ScrollScrubVideo.css'
 
-interface ScrollVideoHeroProps {
-  title: string
-  tagline?: string
+interface ScrollScrubVideoProps {
   videoSrc: string
   posterSrc: string
+  /** Fracción de scroll (0-1) en la que el contenido empieza/termina de revelarse. */
+  revealStart: number
+  revealEnd: number
+  hint?: string
+  children: ReactNode
 }
 
 const LERP_FACTOR = 0.22
 const MIN_SEEK_DELTA = 1 / 90
 
-// Fracción del scroll en la que la puerta empieza/termina de abrirse en el
-// vídeo (medido sobre el clip: ~4.0s-5.0s de los ~8.38s totales). El texto
-// aparece justo en esa ventana.
-const TEXT_REVEAL_START = 0.48
-const TEXT_REVEAL_END = 0.6
-
-export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollVideoHeroProps) {
+export function ScrollScrubVideo({
+  videoSrc,
+  posterSrc,
+  revealStart,
+  revealEnd,
+  hint,
+  children,
+}: ScrollScrubVideoProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const targetTimeRef = useRef(0)
@@ -26,10 +31,7 @@ export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollV
   const [progress, setProgress] = useState(0)
   const [ready, setReady] = useState(false)
 
-  const textReveal = Math.min(
-    1,
-    Math.max(0, (progress - TEXT_REVEAL_START) / (TEXT_REVEAL_END - TEXT_REVEAL_START)),
-  )
+  const reveal = Math.min(1, Math.max(0, (progress - revealStart) / (revealEnd - revealStart)))
 
   useEffect(() => {
     const video = videoRef.current
@@ -96,16 +98,16 @@ export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollV
   }, [])
 
   return (
-    <div className="video-hero-wrapper" ref={wrapperRef}>
-      <div className="video-hero-sticky">
-        <div className="video-hero-stage">
+    <div className="scroll-scrub-wrapper" ref={wrapperRef}>
+      <div className="scroll-scrub-sticky">
+        <div className="scroll-scrub-stage">
           {/* Capa CSS persistente: iOS Safari borra el atributo poster del
               <video> en el primer seek, así que esta capa de fondo es la
               que evita el fotograma negro mientras decodifica. */}
-          <div className="video-hero-poster" style={{ backgroundImage: `url(${posterSrc})` }} />
+          <div className="scroll-scrub-poster" style={{ backgroundImage: `url(${posterSrc})` }} />
           <video
             ref={videoRef}
-            className="video-hero-video"
+            className="scroll-scrub-video"
             src={videoSrc}
             poster={posterSrc}
             muted
@@ -116,23 +118,16 @@ export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollV
             onLoadedMetadata={() => setReady(true)}
           />
         </div>
-        <div className="video-hero-overlay" />
+        <div className="scroll-scrub-overlay" />
 
         <div
-          className="video-hero-content"
-          style={{
-            opacity: textReveal,
-            filter: `blur(${(1 - textReveal) * 10}px)`,
-          }}
+          className="scroll-scrub-content"
+          style={{ opacity: reveal, filter: `blur(${(1 - reveal) * 10}px)` }}
         >
-          <p className="video-hero-eyebrow">Bienvenido a</p>
-          <h1>{title}</h1>
-          {tagline && <p className="video-hero-tagline">{tagline}</p>}
+          {children}
         </div>
 
-        {ready && progress < 0.1 && (
-          <p className="video-hero-hint">Desplázate para descubrir el restaurante ↓</p>
-        )}
+        {hint && ready && progress < 0.1 && <p className="scroll-scrub-hint">{hint}</p>}
       </div>
     </div>
   )

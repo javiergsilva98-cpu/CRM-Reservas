@@ -1,4 +1,4 @@
-.video-hero-wrapper {
+.scroll-scrub-wrapper {
   /* svh evita que el redimensionado al esconderse la barra de direcciones
      en móvil recalcule la altura en pleno gesto de scroll. */
   height: 250vh;
@@ -6,7 +6,7 @@
   position: relative;
 }
 
-.video-hero-sticky {
+.scroll-scrub-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
@@ -18,13 +18,13 @@
   background: #1a120b;
 }
 
-.video-hero-stage {
+.scroll-scrub-stage {
   position: absolute;
   inset: 0;
 }
 
-.video-hero-poster,
-.video-hero-video {
+.scroll-scrub-poster,
+.scroll-scrub-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -33,12 +33,12 @@
   object-position: center;
 }
 
-.video-hero-poster {
+.scroll-scrub-poster {
   background-size: cover;
   background-position: center;
 }
 
-.video-hero-overlay {
+.scroll-scrub-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -50,7 +50,7 @@
   );
 }
 
-.video-hero-content {
+.scroll-scrub-content {
   position: relative;
   z-index: 2;
   max-width: 40rem;
@@ -59,29 +59,7 @@
   color: #f6ead9;
 }
 
-.video-hero-eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 0.8rem;
-  color: #d8a25e;
-  margin: 0 0 0.75rem;
-}
-
-.video-hero-content h1 {
-  font-family: 'Georgia', serif;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  margin: 0 0 1rem;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-}
-
-.video-hero-tagline {
-  font-size: 1.1rem;
-  color: #f0e4d3;
-  margin: 0;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-}
-
-.video-hero-hint {
+.scroll-scrub-hint {
   position: absolute;
   bottom: 2rem;
   left: 50%;
@@ -90,10 +68,10 @@
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   color: #f0e4d3;
-  animation: video-hero-bounce 1.6s ease-in-out infinite;
+  animation: scroll-scrub-bounce 1.6s ease-in-out infinite;
 }
 
-@keyframes video-hero-bounce {
+@keyframes scroll-scrub-bounce {
   0%, 100% { opacity: 0.5; transform: translate(-50%, 0); }
   50% { opacity: 1; transform: translate(-50%, 6px); }
 }
