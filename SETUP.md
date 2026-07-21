@@ -11,6 +11,12 @@
 - ✅ Migración `0011` y pestaña **Sala**: plano visual de mesas (arrastrar para colocar, zonas, estado libre/reservada/ocupada) y asignación de reservas a mesa concreta.
 - ✅ Migración `0012`: Mesas fusionado en Sala, hasta 3 salas nombrables, hasta 3 plantillas de disposición asignables por día de la semana o rango de fechas.
 
+## Pendiente ahora
+
+### Ejecutar `0013_seed_contact_info.sql`
+
+Rellena `address` y `phone` con una dirección y teléfono de ejemplo (ficticios) para que aparezcan al final de la landing, debajo del botón de reservar. Sustitúyelos por los datos reales cuando los tengas — puedes editarlos directamente desde el panel de superadmin más adelante, o pedírmelo y te preparo un formulario en `/admin`.
+
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 
 1. **Next.js**: nos quedamos en Vite por ahora. No compromete ninguna función actual; se revisa en v2 cuando toque hacer adquisición/marketing real (con opciones más baratas que migrar entero, como una función ligera de meta-tags para bots/redes sociales).
