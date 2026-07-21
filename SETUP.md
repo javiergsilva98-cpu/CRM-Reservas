@@ -4,35 +4,25 @@
 
 - ✅ Claves de Supabase copiadas y conectadas (`.env.local` local + variables en Vercel).
 - ✅ Deploy en Vercel: https://crm-reservas.vercel.app/
-- ✅ Migraciones `0001` y `0002` (tablas + carta de Asador Gonsastrez).
+- ✅ Migraciones `0001` a `0006` (esquema base, superadmin, registro de dueños con contraseña).
+- ✅ Tu cuenta (`javiergsilva98@gmail.com`) creada, vinculada como owner de Asador Gonsastrez y como superadmin.
 
-## Pendiente ahora — en este orden
+## Pendiente ahora
 
-### 1. Ejecutar la migración `0005_owner_signup.sql`
+### Ejecutar las migraciones `0007` y `0008`
 
-SQL Editor de Supabase → pega el contenido de `supabase/migrations/0005_owner_signup.sql` → **Run**.
+En el SQL Editor de Supabase, pega y ejecuta (en este orden):
 
-Esto añade la columna `owner_email` a `restaurants` (ya la deja puesta a tu email para Asador Gonsastrez) y permite que la primera persona con ese email cree su cuenta y quede vinculada como dueña.
+1. `supabase/migrations/0007_tables.sql` — añade la tabla de mesas (`restaurant_tables`) y unas funciones de ayuda para las políticas de seguridad.
+2. `supabase/migrations/0008_hours.sql` — añade la tabla de horarios de apertura (`restaurant_hours`).
 
-### 2. Crear tu cuenta desde el CRM (esto crea tu usuario de Auth)
+Después de eso, ya deberías poder usar dentro del CRM (`https://crm-reservas.vercel.app/asador-gonsastrez/crm`):
 
-1. Abre `https://crm-reservas.vercel.app/asador-gonsastrez/crm/login`
-2. Haz clic en **"Créala aquí"** (modo registro).
-3. Email: `javiergsilva98@gmail.com`, y la contraseña que quieras (mínimo 6 caracteres).
-4. Según la configuración de tu proyecto, puede pedirte confirmar el correo (revisa tu bandeja). Si no pide nada, entrarás directo.
-
-### 3. Ejecutar la migración `0004_platform_admins.sql`
-
-Ahora que ya existe tu usuario (paso 2), en el SQL Editor pega el contenido de `supabase/migrations/0004_platform_admins.sql` → **Run**. Esto te da acceso de **superadmin** (ver/gestionar todos los restaurantes en `/admin`).
-
-**Importante el orden**: este paso tiene que ir *después* del paso 2 — la migración busca tu usuario por email, y hasta que no te registras, ese usuario no existe.
-
-### 4. Comprobar accesos
-
-- `https://crm-reservas.vercel.app/asador-gonsastrez/crm` → deberías ver el panel de reservas de Asador Gonsastrez (te vinculas como owner automáticamente al entrar).
-- `https://crm-reservas.vercel.app/admin/login` → pide el enlace mágico a tu email y entra al panel de superadmin (listado de restaurantes).
-
-Nota: `0003_link_owner.sql` ha quedado obsoleta con este nuevo flujo — no hace falta ejecutarla, la vinculación ahora pasa por el registro con contraseña + `0005`.
+- **Mesas**: dar de alta las mesas del restaurante y su capacidad.
+- **Horarios**: configurar qué días abre y en qué horario.
+- **+ Nueva reserva**: añadir a mano una reserva recibida por teléfono u otra vía.
+- **Disponibilidad**: ver aforo total vs reservado para los próximos 14 días.
+- **Analítica**: gráfico de reservas por día (últimos 30 días).
 
 ---
 
