@@ -18,4 +18,4 @@ No hay ejecución automática todavía: cuando aparezca un archivo nuevo aquí, 
 | `0008_hours.sql` | Tabla `restaurant_hours` (horario de apertura por día) | ✅ 2026-07-21 |
 | `0009_customers.sql` | Tabla `customers` (CRM) + función `find_or_create_customer` | ✅ 2026-07-21 |
 | `0010_reservations_customer_link.sql` | Vincula `reservations.customer_id`, separa notas cliente/internas, migra datos de contacto existentes a `customers` | ✅ 2026-07-21 |
-| `0011_sala.sql` | Añade `zone`/`position_x`/`position_y` a `restaurant_tables` y `table_id` a `reservations`, para el plano visual de sala | ⏳ pendiente |
+| `0011_sala.sql` | Añade `zone`/`position_x`/`position_y` a `restaurant_tables` y `table_id` a `reservations`, para el plano visual de sala | ✅ 2026-07-21 |

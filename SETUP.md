@@ -8,12 +8,7 @@
 - ✅ Tu cuenta (`javiergsilva98@gmail.com`) creada, vinculada como owner de Asador Gonsastrez y como superadmin.
 - ✅ CRM con Reservas, Nueva reserva, Disponibilidad, Mesas, Horarios y Analítica.
 - ✅ Migraciones `0009` y `0010`: `customers` como entidad propia del CRM (alergias, dieta, tags, GDPR, historial de reservas), separada de `reservations`.
-
-## Pendiente ahora
-
-### Ejecutar `0011_sala.sql`
-
-Añade zona y posición visual a `restaurant_tables`, y `table_id` a `reservations`. Necesaria para la nueva pestaña **Sala** del CRM (plano visual de mesas, arrastrar para colocar cada mesa como está en el local real, y asignar reservas a mesa concreta).
+- ✅ Migración `0011` y pestaña **Sala**: plano visual de mesas (arrastrar para colocar, zonas, estado libre/reservada/ocupada) y asignación de reservas a mesa concreta.
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 
