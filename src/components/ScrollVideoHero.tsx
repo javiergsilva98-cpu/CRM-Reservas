@@ -12,10 +12,10 @@ const LERP_FACTOR = 0.22
 const MIN_SEEK_DELTA = 1 / 90
 
 // Fracción del scroll en la que la puerta empieza/termina de abrirse en el
-// vídeo (medido sobre el clip: ~4.0s-5.0s de los ~8.93s totales). El texto
+// vídeo (medido sobre el clip: ~4.0s-5.0s de los ~8.38s totales). El texto
 // aparece justo en esa ventana.
-const TEXT_REVEAL_START = 0.45
-const TEXT_REVEAL_END = 0.58
+const TEXT_REVEAL_START = 0.48
+const TEXT_REVEAL_END = 0.6
 
 export function ScrollVideoHero({ title, tagline, videoSrc, posterSrc }: ScrollVideoHeroProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)

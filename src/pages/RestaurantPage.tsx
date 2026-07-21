@@ -19,8 +19,8 @@ export function RestaurantPage() {
       <ScrollVideoHero
         title={restaurant.name}
         tagline="Cocina de brasa y tradición, en el corazón de la ciudad"
-        videoSrc="/video/hero-asador-gonsastrez-v2.mp4"
-        posterSrc="/video/hero-asador-gonsastrez-poster-v2.jpg"
+        videoSrc="/video/hero-asador-gonsastrez-v3.mp4"
+        posterSrc="/video/hero-asador-gonsastrez-poster-v3.jpg"
       />
 
       <MenuSection />
