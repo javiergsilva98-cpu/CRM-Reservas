@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
-import { CrmNav } from '../../components/CrmNav'
+import { CrmLayout } from '../../components/CrmLayout'
 import {
   RESERVATION_STATUS_LABELS,
   type Reservation,
@@ -80,8 +80,7 @@ export function DashboardPage() {
   if (loadingRestaurant || !restaurant) return <p>Cargando...</p>
 
   return (
-    <>
-      <CrmNav slug={slug ?? ''} />
+    <CrmLayout slug={slug ?? ''}>
       <main className="dashboard-page">
         <header className="dashboard-header">
           <h1>Reservas — {restaurant.name}</h1>
@@ -147,6 +146,6 @@ export function DashboardPage() {
           </div>
         )}
       </main>
-    </>
+    </CrmLayout>
   )
 }

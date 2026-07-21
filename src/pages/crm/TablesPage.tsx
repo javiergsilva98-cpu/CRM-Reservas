@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
-import { CrmNav } from '../../components/CrmNav'
+import { CrmLayout } from '../../components/CrmLayout'
 import type { RestaurantTable } from '../../types'
 import './TablesPage.css'
 
@@ -84,8 +84,7 @@ export function TablesPage() {
     .reduce((sum, t) => sum + t.capacity, 0)
 
   return (
-    <>
-      <CrmNav slug={slug ?? ''} />
+    <CrmLayout slug={slug ?? ''}>
       <main className="tables-page">
         <h1>Mesas — {restaurant.name}</h1>
         <p className="tables-total">
@@ -143,6 +142,6 @@ export function TablesPage() {
           </table>
         )}
       </main>
-    </>
+    </CrmLayout>
   )
 }

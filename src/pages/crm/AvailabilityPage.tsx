@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
-import { CrmNav } from '../../components/CrmNav'
+import { CrmLayout } from '../../components/CrmLayout'
 import './AvailabilityPage.css'
 
 const DAYS_AHEAD = 14
@@ -79,8 +79,7 @@ export function AvailabilityPage() {
   const dates = Array.from({ length: DAYS_AHEAD }, (_, i) => addDays(today, i))
 
   return (
-    <>
-      <CrmNav slug={slug ?? ''} />
+    <CrmLayout slug={slug ?? ''}>
       <main className="availability-page">
         <h1>Disponibilidad — {restaurant.name}</h1>
 
@@ -123,6 +122,6 @@ export function AvailabilityPage() {
           </table>
         )}
       </main>
-    </>
+    </CrmLayout>
   )
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
-import { CrmNav } from '../../components/CrmNav'
+import { CrmLayout } from '../../components/CrmLayout'
 import './HoursPage.css'
 
 const DAY_NAMES = [
@@ -104,8 +104,7 @@ export function HoursPage() {
   if (loadingRestaurant || !restaurant) return <p>Cargando...</p>
 
   return (
-    <>
-      <CrmNav slug={slug ?? ''} />
+    <CrmLayout slug={slug ?? ''}>
       <main className="hours-page">
         <h1>Horarios — {restaurant.name}</h1>
 
@@ -168,6 +167,6 @@ export function HoursPage() {
           </>
         )}
       </main>
-    </>
+    </CrmLayout>
   )
 }

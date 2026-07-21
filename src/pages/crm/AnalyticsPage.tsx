@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
-import { CrmNav } from '../../components/CrmNav'
+import { CrmLayout } from '../../components/CrmLayout'
 import { ReservationsBarChart } from '../../components/ReservationsBarChart'
 import './AnalyticsPage.css'
 
@@ -67,8 +67,7 @@ export function AnalyticsPage() {
   const total = series.reduce((sum, d) => sum + d.count, 0)
 
   return (
-    <>
-      <CrmNav slug={slug ?? ''} />
+    <CrmLayout slug={slug ?? ''}>
       <main className="analytics-page">
         <h1>Reservas por día — {restaurant.name}</h1>
         <p className="analytics-hint">
@@ -80,6 +79,6 @@ export function AnalyticsPage() {
 
         {!loading && <ReservationsBarChart data={series} />}
       </main>
-    </>
+    </CrmLayout>
   )
 }

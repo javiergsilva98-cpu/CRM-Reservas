@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
-import { CrmNav } from '../../components/CrmNav'
+import { CrmLayout } from '../../components/CrmLayout'
 import { RESERVATION_STATUS_LABELS, type ReservationStatus } from '../../types'
 import './NewReservationPage.css'
 
@@ -54,8 +54,7 @@ export function NewReservationPage() {
   if (loadingRestaurant || !restaurant) return <p>Cargando...</p>
 
   return (
-    <>
-      <CrmNav slug={slug ?? ''} />
+    <CrmLayout slug={slug ?? ''}>
       <main className="new-reservation-page">
         <h1>Nueva reserva manual</h1>
         <p className="new-reservation-hint">
@@ -146,6 +145,6 @@ export function NewReservationPage() {
           </button>
         </form>
       </main>
-    </>
+    </CrmLayout>
   )
 }
