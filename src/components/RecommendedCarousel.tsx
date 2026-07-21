@@ -8,7 +8,12 @@ interface RecommendedCarouselProps {
 }
 
 // Recorrido máximo (px) del parallax dentro de cada tarjeta.
-const PARALLAX_STRENGTH = 40
+const PARALLAX_STRENGTH = 100
+// A partir de este offset (fracción del ancho del carrusel) no seguimos
+// aumentando el desplazamiento: evita que una tarjeta muy alejada del
+// centro empuje la imagen más allá del margen de sobredimensionado y
+// se vea el borde vacío.
+const PARALLAX_MAX_OFFSET = 0.5
 
 export function RecommendedCarousel({ platos, titulo = 'Recomendados' }: RecommendedCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null)
@@ -39,7 +44,8 @@ export function RecommendedCarousel({ platos, titulo = 'Recomendados' }: Recomme
 
         const imgWrap = imgWrapRefs.current[i]
         if (imgWrap && !reduceMotion) {
-          imgWrap.style.transform = `translateX(${offset * -PARALLAX_STRENGTH}px)`
+          const clampedOffset = Math.max(-PARALLAX_MAX_OFFSET, Math.min(PARALLAX_MAX_OFFSET, offset))
+          imgWrap.style.transform = `translateX(${clampedOffset * -PARALLAX_STRENGTH}px)`
         }
 
         const absOffset = Math.abs(offset)

@@ -51,7 +51,7 @@
 
 .rc-card-imgwrap {
   position: absolute;
-  inset: -8%;
+  inset: -20%;
   will-change: transform;
 }
 
