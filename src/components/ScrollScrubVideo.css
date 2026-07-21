@@ -1,8 +1,8 @@
 .scroll-scrub-wrapper {
   /* svh evita que el redimensionado al esconderse la barra de direcciones
      en móvil recalcule la altura en pleno gesto de scroll. */
-  height: 250vh;
-  height: 250svh;
+  height: calc(var(--scrub-height, 250) * 1vh);
+  height: calc(var(--scrub-height, 250) * 1svh);
   position: relative;
 }
 

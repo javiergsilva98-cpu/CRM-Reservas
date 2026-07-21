@@ -39,8 +39,9 @@ export function RestaurantPage() {
       <ScrollScrubVideo
         videoSrc="/video/cta-scrub-asador-gonsastrez-v2.mp4"
         posterSrc="/video/cta-scrub-asador-gonsastrez-poster-v2.jpg"
-        revealStart={0.55}
-        revealEnd={0.7}
+        heightVh={150}
+        revealStart={0.4}
+        revealEnd={0.55}
         startFraction={0.25}
         footer={
           (restaurant.address || restaurant.phone) && (

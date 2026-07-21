@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import './ScrollScrubVideo.css'
 
 interface ScrollScrubVideoProps {
@@ -14,6 +14,8 @@ interface ScrollScrubVideoProps {
    * 100% del viewport. El final del scrub no cambia.
    */
   startFraction?: number
+  /** Altura del recorrido de scroll, en vh. Controla cuánto hay que scrollear para completar el scrub. */
+  heightVh?: number
   hint?: string
   children: ReactNode
   /** Contenido que aparece pegado a la parte inferior en vez de centrado. */
@@ -32,6 +34,7 @@ export function ScrollScrubVideo({
   revealStart,
   revealEnd,
   startFraction = 0,
+  heightVh = 250,
   hint,
   children,
   footer,
@@ -120,8 +123,10 @@ export function ScrollScrubVideo({
     }
   }, [startFraction])
 
+  const wrapperStyle = { '--scrub-height': heightVh } as CSSProperties
+
   return (
-    <div className="scroll-scrub-wrapper" ref={wrapperRef}>
+    <div className="scroll-scrub-wrapper" ref={wrapperRef} style={wrapperStyle}>
       <div className="scroll-scrub-sticky">
         <div className="scroll-scrub-stage">
           {/* Capa CSS persistente: iOS Safari borra el atributo poster del
