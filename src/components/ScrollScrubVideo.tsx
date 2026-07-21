@@ -8,6 +8,12 @@ interface ScrollScrubVideoProps {
   /** Fracción de scroll (0-1) en la que el contenido empieza/termina de revelarse. */
   revealStart: number
   revealEnd: number
+  /**
+   * Fracción de la pantalla que ya debe estar a la vista (0-1) para que el
+   * vídeo empiece a moverse, en vez de esperar a que la sección cubra el
+   * 100% del viewport. El final del scrub no cambia.
+   */
+  startFraction?: number
   hint?: string
   children: ReactNode
 }
@@ -20,6 +26,7 @@ export function ScrollScrubVideo({
   posterSrc,
   revealStart,
   revealEnd,
+  startFraction = 0,
   hint,
   children,
 }: ScrollScrubVideoProps) {
@@ -58,8 +65,12 @@ export function ScrollScrubVideo({
       if (!el || !video) return
 
       const rect = el.getBoundingClientRect()
-      const scrollable = rect.height - window.innerHeight
-      const p = scrollable > 0 ? -rect.top / scrollable : 0
+      // El scrub empieza en cuanto la sección lleva `startFraction` de
+      // pantalla a la vista, no cuando cubre el 100% del viewport, pero
+      // sigue terminando en el mismo punto de siempre (fin del pin).
+      const startOffset = startFraction * window.innerHeight
+      const scrollable = rect.height - window.innerHeight + startOffset
+      const p = scrollable > 0 ? (startOffset - rect.top) / scrollable : 0
       const clamped = Math.min(1, Math.max(0, p))
       setProgress(clamped)
 
@@ -95,7 +106,7 @@ export function ScrollScrubVideo({
       window.removeEventListener('resize', onScroll)
       cancelAnimationFrame(rafId)
     }
-  }, [])
+  }, [startFraction])
 
   return (
     <div className="scroll-scrub-wrapper" ref={wrapperRef}>
