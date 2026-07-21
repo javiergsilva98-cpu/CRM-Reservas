@@ -108,9 +108,6 @@ export function RecommendedCarousel({ platos, titulo = 'Recomendados' }: Recomme
               {plato.tag && <span className="rc-card-tag">{plato.tag}</span>}
               <h3 className="rc-card-name">{plato.nombre}</h3>
               {plato.descripcion && <p className="rc-card-description">{plato.descripcion}</p>}
-              <button type="button" className="rc-card-cta">
-                Ver más
-              </button>
             </div>
           </div>
         ))}
