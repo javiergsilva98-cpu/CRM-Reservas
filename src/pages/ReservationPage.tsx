@@ -5,6 +5,8 @@ import { supabase } from '../lib/supabaseClient'
 import { useRestaurant } from '../lib/useRestaurant'
 import './ReservationPage.css'
 
+const today = new Date().toISOString().slice(0, 10)
+
 export function ReservationPage() {
   const { slug } = useParams<{ slug: string }>()
   const { restaurant, loading, error } = useRestaurant(slug ?? '')
@@ -41,11 +43,20 @@ export function ReservationPage() {
 
     setSubmitting(false)
 
-    if (error) setSubmitError(error.message)
-    else setSubmitted(true)
+    if (error) {
+      console.error(error)
+      setSubmitError(
+        'No hemos podido enviar tu reserva. Inténtalo de nuevo en unos minutos.',
+      )
+    } else {
+      setSubmitted(true)
+    }
   }
 
-  if (error) return <p>Error al conectar con Supabase: {error}</p>
+  if (error) {
+    console.error(error)
+    return <p>No hemos encontrado este restaurante.</p>
+  }
   if (loading || !restaurant) return <p>Cargando...</p>
 
   if (submitted) {
@@ -110,6 +121,7 @@ export function ReservationPage() {
           <input
             type="date"
             required
+            min={today}
             value={reservationDate}
             onChange={(e) => setReservationDate(e.target.value)}
           />

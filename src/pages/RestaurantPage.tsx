@@ -8,7 +8,10 @@ export function RestaurantPage() {
   const { slug } = useParams<{ slug: string }>()
   const { restaurant, loading, error } = useRestaurant(slug ?? '')
 
-  if (error) return <p>Error al conectar con Supabase: {error}</p>
+  if (error) {
+    console.error(error)
+    return <p>No hemos encontrado este restaurante.</p>
+  }
   if (loading || !restaurant) return <p>Cargando...</p>
 
   return (

@@ -2,16 +2,13 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
-import type { Reservation, ReservationStatus } from '../../types'
+import { CrmNav } from '../../components/CrmNav'
+import {
+  RESERVATION_STATUS_LABELS,
+  type Reservation,
+  type ReservationStatus,
+} from '../../types'
 import './DashboardPage.css'
-
-const STATUS_LABELS: Record<ReservationStatus, string> = {
-  pending: 'Pendiente',
-  confirmed: 'Confirmada',
-  cancelled: 'Cancelada',
-  seated: 'Sentados',
-  no_show: 'No-show',
-}
 
 export function DashboardPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -79,77 +76,77 @@ export function DashboardPage() {
     )
   }
 
-  async function handleSignOut() {
-    await supabase.auth.signOut()
-  }
-
   if (restaurantError) return <p>Error al conectar con Supabase: {restaurantError}</p>
   if (loadingRestaurant || !restaurant) return <p>Cargando...</p>
 
   return (
-    <main className="dashboard-page">
-      <header className="dashboard-header">
-        <h1>Reservas — {restaurant.name}</h1>
-        <button onClick={handleSignOut}>Cerrar sesión</button>
-      </header>
+    <>
+      <CrmNav slug={slug ?? ''} />
+      <main className="dashboard-page">
+        <header className="dashboard-header">
+          <h1>Reservas — {restaurant.name}</h1>
+        </header>
 
-      {error && <p className="dashboard-error">{error}</p>}
-      {loading && <p>Cargando...</p>}
+        {error && <p className="dashboard-error">{error}</p>}
+        {loading && <p>Cargando...</p>}
 
-      {!loading && reservations.length === 0 && (
-        <p>No hay reservas todavía.</p>
-      )}
+        {!loading && reservations.length === 0 && (
+          <p>No hay reservas todavía.</p>
+        )}
 
-      {!loading && reservations.length > 0 && (
-        <div className="dashboard-table-wrapper">
-          <table className="dashboard-table">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Cliente</th>
-                <th>Personas</th>
-                <th>Contacto</th>
-                <th>Notas</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reservations.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.reservation_date}</td>
-                  <td>{r.reservation_time}</td>
-                  <td>{r.customer_name}</td>
-                  <td>{r.party_size}</td>
-                  <td>
-                    {r.customer_phone && <div>{r.customer_phone}</div>}
-                    {r.customer_email && <div>{r.customer_email}</div>}
-                  </td>
-                  <td>{r.notes}</td>
-                  <td>
-                    <select
-                      value={r.status}
-                      onChange={(e) =>
-                        updateStatus(
-                          r.id,
-                          e.target.value as ReservationStatus,
-                        )
-                      }
-                      className={`status-select status-${r.status}`}
-                    >
-                      {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                        <option key={value} value={value}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
+        {!loading && reservations.length > 0 && (
+          <div className="dashboard-table-wrapper">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Cliente</th>
+                  <th>Personas</th>
+                  <th>Contacto</th>
+                  <th>Notas</th>
+                  <th>Estado</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </main>
+              </thead>
+              <tbody>
+                {reservations.map((r) => (
+                  <tr key={r.id}>
+                    <td>{r.reservation_date}</td>
+                    <td>{r.reservation_time}</td>
+                    <td>{r.customer_name}</td>
+                    <td>{r.party_size}</td>
+                    <td>
+                      {r.customer_phone && <div>{r.customer_phone}</div>}
+                      {r.customer_email && <div>{r.customer_email}</div>}
+                    </td>
+                    <td>{r.notes}</td>
+                    <td>
+                      <select
+                        value={r.status}
+                        onChange={(e) =>
+                          updateStatus(
+                            r.id,
+                            e.target.value as ReservationStatus,
+                          )
+                        }
+                        className={`status-select status-${r.status}`}
+                      >
+                        {Object.entries(RESERVATION_STATUS_LABELS).map(
+                          ([value, label]) => (
+                            <option key={value} value={value}>
+                              {label}
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </main>
+    </>
   )
 }

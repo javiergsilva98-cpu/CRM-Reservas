@@ -1,0 +1,34 @@
+.crm-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid #e5d9c7;
+  background: #f6ead9;
+}
+
+.crm-nav-links {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+}
+
+.crm-nav-links a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #2c1b10;
+  padding: 0.3rem 0;
+}
+
+.crm-nav button {
+  flex-shrink: 0;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+  background: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}

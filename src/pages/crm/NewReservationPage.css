@@ -1,0 +1,60 @@
+.new-reservation-page {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.new-reservation-page h1 {
+  font-family: 'Georgia', serif;
+  margin-bottom: 0.5rem;
+}
+
+.new-reservation-hint {
+  margin: 0 0 2rem;
+  color: #5a4633;
+  font-size: 0.9rem;
+}
+
+.new-reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.new-reservation-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #2c1b10;
+}
+
+.new-reservation-form input,
+.new-reservation-form select,
+.new-reservation-form textarea {
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+}
+
+.new-reservation-form button {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #2c1b10;
+  color: #f6ead9;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.new-reservation-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.new-reservation-error {
+  color: #b3261e;
+  font-size: 0.9rem;
+}

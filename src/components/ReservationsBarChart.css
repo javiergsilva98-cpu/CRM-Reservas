@@ -1,0 +1,65 @@
+.reservations-chart {
+  position: relative;
+}
+
+.chart-toggle {
+  margin-bottom: 0.75rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+  background: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.chart-svg {
+  width: 100%;
+  height: auto;
+}
+
+.chart-gridline {
+  stroke: #e5d9c7;
+  stroke-width: 1;
+}
+
+.chart-axis-label {
+  font-size: 9px;
+  fill: #8a7860;
+}
+
+.chart-axis-label-x {
+  text-anchor: middle;
+}
+
+.chart-bar {
+  fill: #2a78d6;
+}
+
+.chart-bar:hover {
+  fill: #1c5cab;
+}
+
+.chart-tooltip {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #2c1b10;
+  color: #f6ead9;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.chart-table th,
+.chart-table td {
+  text-align: left;
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid #e5d9c7;
+}

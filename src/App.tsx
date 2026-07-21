@@ -6,6 +6,11 @@ import { LoginPage as SuperAdminLoginPage } from './pages/admin/LoginPage'
 import { DashboardPage as SuperAdminDashboardPage } from './pages/admin/DashboardPage'
 import { LoginPage as CrmLoginPage } from './pages/crm/LoginPage'
 import { DashboardPage as CrmDashboardPage } from './pages/crm/DashboardPage'
+import { NewReservationPage } from './pages/crm/NewReservationPage'
+import { TablesPage } from './pages/crm/TablesPage'
+import { HoursPage } from './pages/crm/HoursPage'
+import { AvailabilityPage } from './pages/crm/AvailabilityPage'
+import { AnalyticsPage } from './pages/crm/AnalyticsPage'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
 function App() {
@@ -30,6 +35,46 @@ function App() {
           element={
             <ProtectedRoute>
               <CrmDashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/nueva-reserva"
+          element={
+            <ProtectedRoute>
+              <NewReservationPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/mesas"
+          element={
+            <ProtectedRoute>
+              <TablesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/horarios"
+          element={
+            <ProtectedRoute>
+              <HoursPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/disponibilidad"
+          element={
+            <ProtectedRoute>
+              <AvailabilityPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/analitica"
+          element={
+            <ProtectedRoute>
+              <AnalyticsPage />
             </ProtectedRoute>
           }
         />

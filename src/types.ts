@@ -5,6 +5,14 @@ export type ReservationStatus =
   | 'seated'
   | 'no_show'
 
+export const RESERVATION_STATUS_LABELS: Record<ReservationStatus, string> = {
+  pending: 'Pendiente',
+  confirmed: 'Confirmada',
+  cancelled: 'Cancelada',
+  seated: 'Sentados',
+  no_show: 'No-show',
+}
+
 export interface Restaurant {
   id: string
   slug: string
@@ -31,4 +39,22 @@ export interface Reservation {
   notes: string | null
   created_at: string
   updated_at: string
+}
+
+export interface RestaurantTable {
+  id: string
+  restaurant_id: string
+  name: string
+  capacity: number
+  active: boolean
+  created_at: string
+}
+
+export interface RestaurantHours {
+  id: string
+  restaurant_id: string
+  day_of_week: number
+  open_time: string | null
+  close_time: string | null
+  closed: boolean
 }
