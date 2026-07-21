@@ -13,6 +13,7 @@ import { AvailabilityPage } from './pages/crm/AvailabilityPage'
 import { AnalyticsPage } from './pages/crm/AnalyticsPage'
 import { CustomersPage } from './pages/crm/CustomersPage'
 import { CustomerDetailPage } from './pages/crm/CustomerDetailPage'
+import { SalaPage } from './pages/crm/SalaPage'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
 function App() {
@@ -93,6 +94,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CustomerDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:slug/crm/sala"
+          element={
+            <ProtectedRoute>
+              <SalaPage />
             </ProtectedRoute>
           }
         />

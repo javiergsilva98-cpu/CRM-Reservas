@@ -1,0 +1,201 @@
+.sala-page {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.sala-page h1 {
+  font-family: 'Georgia', serif;
+  margin: 0 0 1.5rem;
+}
+
+.sala-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.sala-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #2c1b10;
+}
+
+.sala-controls input[type='date'] {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+}
+
+.sala-controls button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #2c1b10;
+  color: #f6ead9;
+  cursor: pointer;
+}
+
+.sala-controls button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.sala-body {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.sala-canvas {
+  position: relative;
+  flex: 1 1 32rem;
+  min-width: 20rem;
+  height: 32rem;
+  background: #f6ead9;
+  border: 1px dashed #cbb9a3;
+  border-radius: 0.6rem;
+  touch-action: none;
+}
+
+.sala-canvas-editing {
+  cursor: grab;
+  background: #f1e3cd;
+}
+
+.sala-table {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  width: 5rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  background: #eef7ee;
+  cursor: pointer;
+  font-size: 0.8rem;
+  user-select: none;
+  transform: translate(-50%, -50%);
+}
+
+.sala-table-free {
+  background: #eef7ee;
+  border-color: #8fbf8f;
+}
+
+.sala-table-reserved {
+  background: #eaf1fb;
+  border-color: #7fa7d9;
+}
+
+.sala-table-occupied {
+  background: #fbeaea;
+  border-color: #d98f8f;
+}
+
+.sala-table-inactive {
+  opacity: 0.45;
+}
+
+.sala-table-active {
+  outline: 2px solid #2c1b10;
+  outline-offset: 2px;
+}
+
+.sala-canvas-editing .sala-table {
+  cursor: grab;
+}
+
+.sala-table-name {
+  font-weight: 600;
+  color: #2c1b10;
+}
+
+.sala-table-capacity,
+.sala-table-time {
+  color: #5a4633;
+  font-size: 0.75rem;
+}
+
+.sala-table-zone-input {
+  width: 100%;
+  margin-top: 0.25rem;
+  font: inherit;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.3rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.3rem;
+}
+
+.sala-side {
+  flex: 1 1 16rem;
+  min-width: 15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sala-side h2 {
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+}
+
+.sala-empty {
+  color: #5a4633;
+  font-size: 0.85rem;
+}
+
+.sala-reservation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sala-reservation-list li {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5d9c7;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.sala-reservation-selected {
+  border-color: #2c1b10;
+  background: #f1e3cd;
+}
+
+.sala-unassign {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  border: none;
+  border-radius: 0.3rem;
+  background: #2c1b10;
+  color: #f6ead9;
+  cursor: pointer;
+}
+
+.sala-hint {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #5a4633;
+}
+
+.dashboard-error {
+  color: #b3261e;
+}

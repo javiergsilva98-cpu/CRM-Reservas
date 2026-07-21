@@ -30,6 +30,7 @@ export interface Reservation {
   id: string
   restaurant_id: string
   customer_id: string
+  table_id: string | null
   party_size: number
   reservation_date: string
   reservation_time: string
@@ -79,6 +80,9 @@ export interface RestaurantTable {
   name: string
   capacity: number
   active: boolean
+  zone: string | null
+  position_x: number | null
+  position_y: number | null
   created_at: string
 }
 

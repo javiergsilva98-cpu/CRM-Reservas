@@ -13,6 +13,7 @@ export function CrmNav({ slug }: { slug: string }) {
         <Link to={`/${slug}/crm`}>Reservas</Link>
         <Link to={`/${slug}/crm/nueva-reserva`}>+ Nueva reserva</Link>
         <Link to={`/${slug}/crm/clientes`}>Clientes</Link>
+        <Link to={`/${slug}/crm/sala`}>Sala</Link>
         <Link to={`/${slug}/crm/disponibilidad`}>Disponibilidad</Link>
         <Link to={`/${slug}/crm/mesas`}>Mesas</Link>
         <Link to={`/${slug}/crm/horarios`}>Horarios</Link>
