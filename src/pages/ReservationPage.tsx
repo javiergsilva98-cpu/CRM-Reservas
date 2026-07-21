@@ -114,9 +114,10 @@ export function ReservationPage() {
         </label>
 
         <label>
-          Teléfono
+          Teléfono *
           <input
             type="tel"
+            required
             value={customerPhone}
             onChange={(e) => setCustomerPhone(e.target.value)}
           />
