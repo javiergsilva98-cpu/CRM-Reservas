@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useRestaurant } from '../lib/useRestaurant'
+import { generateTimeSlots } from '../lib/timeSlots'
 import { AccordionStep } from '../components/AccordionStep'
 import {
   CalendarIcon,
@@ -14,6 +15,7 @@ import {
   PersonIcon,
   PhoneIcon,
 } from '../components/icons'
+import type { RestaurantHours } from '../types'
 import './ReservationPage.css'
 
 const today = new Date().toISOString().slice(0, 10)
@@ -30,6 +32,11 @@ function formatDateSummary(date: string) {
   })
 }
 
+function dayOfWeekFor(date: string) {
+  const [year, month, day] = date.split('-').map(Number)
+  return new Date(year, month - 1, day).getDay()
+}
+
 export function ReservationPage() {
   const { slug } = useParams<{ slug: string }>()
   const { restaurant, loading, error } = useRestaurant(slug ?? '')
@@ -42,6 +49,8 @@ export function ReservationPage() {
   const [reservationDate, setReservationDate] = useState('')
   const [reservationTime, setReservationTime] = useState('')
 
+  const [hoursByDay, setHoursByDay] = useState<Record<number, RestaurantHours> | null>(null)
+
   const [customerName, setCustomerName] = useState('')
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
@@ -50,6 +59,29 @@ export function ReservationPage() {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
+
+  useEffect(() => {
+    if (!restaurant) return
+    supabase
+      .from('restaurant_hours')
+      .select('*')
+      .eq('restaurant_id', restaurant.id)
+      .then(({ data }) => {
+        const byDay: Record<number, RestaurantHours> = {}
+        for (const row of data ?? []) byDay[row.day_of_week] = row
+        setHoursByDay(byDay)
+      })
+  }, [restaurant])
+
+  useEffect(() => {
+    setReservationTime('')
+  }, [reservationDate])
+
+  const dayHours = reservationDate ? hoursByDay?.[dayOfWeekFor(reservationDate)] : undefined
+  const timeSlots =
+    reservationDate && dayHours && !dayHours.closed && restaurant
+      ? generateTimeSlots(dayHours.open_time, dayHours.close_time, restaurant.reservation_duration_minutes)
+      : []
 
   const dateTimeValid = Boolean(reservationDate && reservationTime)
   const contactValid = Boolean(customerName.trim() && customerPhone.trim())
@@ -229,18 +261,40 @@ export function ReservationPage() {
             </span>
           </label>
 
-          <label className="reservation-field">
-            <span className="reservation-field-label">Hora *</span>
-            <span className="reservation-input-wrap">
-              <ClockIcon className="reservation-field-icon" />
-              <input
-                type="time"
-                required
-                value={reservationTime}
-                onChange={(e) => setReservationTime(e.target.value)}
-              />
+          <div className="reservation-field">
+            <span className="reservation-field-label">
+              <ClockIcon className="reservation-field-label-icon" /> Hora *
             </span>
-          </label>
+
+            {!reservationDate && (
+              <p className="time-slots-hint">Elige antes una fecha.</p>
+            )}
+
+            {reservationDate && hoursByDay === null && (
+              <p className="time-slots-hint">Cargando horario...</p>
+            )}
+
+            {reservationDate && hoursByDay !== null && timeSlots.length === 0 && (
+              <p className="time-slots-hint">
+                Ese día no tenemos huecos online. Elige otra fecha o llámanos.
+              </p>
+            )}
+
+            {timeSlots.length > 0 && (
+              <div className="time-slot-grid">
+                {timeSlots.map((slot) => (
+                  <button
+                    key={slot}
+                    type="button"
+                    className={`time-slot-chip ${reservationTime === slot ? 'time-slot-chip--selected' : ''}`}
+                    onClick={() => setReservationTime(slot)}
+                  >
+                    {slot}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <button
             type="button"

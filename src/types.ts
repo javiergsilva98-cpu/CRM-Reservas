@@ -23,6 +23,7 @@ export interface Restaurant {
   address: string | null
   active: boolean
   owner_email: string | null
+  reservation_duration_minutes: number
   created_at: string
 }
 

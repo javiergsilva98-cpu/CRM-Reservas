@@ -10,12 +10,14 @@
 - ✅ Migraciones `0009` y `0010`: `customers` como entidad propia del CRM (alergias, dieta, tags, GDPR, historial de reservas), separada de `reservations`.
 - ✅ Migración `0011` y pestaña **Sala**: plano visual de mesas (arrastrar para colocar, zonas, estado libre/reservada/ocupada) y asignación de reservas a mesa concreta.
 - ✅ Migración `0012`: Mesas fusionado en Sala, hasta 3 salas nombrables, hasta 3 plantillas de disposición asignables por día de la semana o rango de fechas.
+- ✅ Migración `0013`: dirección y teléfono de ejemplo (placeholder) para Asador Gonsastrez.
+- ✅ Rediseño del formulario público de reserva como acordeón (comensales, fecha/hora, datos) y del carrusel "Recomendados" con parallax en la landing.
 
 ## Pendiente ahora
 
-### Ejecutar `0013_seed_contact_info.sql`
+### Ejecutar `0014_reservation_duration.sql`
 
-Rellena `address` y `phone` con una dirección y teléfono de ejemplo (ficticios) para que aparezcan al final de la landing, debajo del botón de reservar. Sustitúyelos por los datos reales cuando los tengas — puedes editarlos directamente desde el panel de superadmin más adelante, o pedírmelo y te preparo un formulario en `/admin`.
+Añade `restaurants.reservation_duration_minutes` (por defecto 120). Se usa para calcular, junto con el horario de cada día (pestaña **Horarios** del CRM), el último hueco reservable online antes del cierre, y para generar los huecos de media hora del formulario público de reserva. Después de ejecutarla, entra en **Horarios** y confirma/ajusta la "Duración media de una reserva" para Asador Gonsastrez (por defecto queda en 2h).
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 

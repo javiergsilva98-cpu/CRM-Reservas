@@ -9,6 +9,30 @@
   margin: 0 0 2rem;
 }
 
+.duration-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 20rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.75rem;
+}
+
+.duration-field select {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+}
+
+.duration-field-hint {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #8a7860;
+}
+
 .hours-table {
   width: 100%;
   border-collapse: collapse;

@@ -26,6 +26,15 @@ function defaultDay(day_of_week: number): DayHours {
   return { day_of_week, open_time: '13:00', close_time: '23:00', closed: false }
 }
 
+const DURATION_OPTIONS = [60, 90, 120, 150, 180, 210, 240]
+
+function formatDuration(minutes: number) {
+  const hours = Math.floor(minutes / 60)
+  const mins = minutes % 60
+  if (mins === 0) return `${hours}h`
+  return `${hours}h ${mins}min`
+}
+
 export function HoursPage() {
   const { slug } = useParams<{ slug: string }>()
   const { restaurant, loading: loadingRestaurant, error: restaurantError } =
@@ -34,6 +43,7 @@ export function HoursPage() {
   const [days, setDays] = useState<DayHours[]>(
     Array.from({ length: 7 }, (_, i) => defaultDay(i)),
   )
+  const [durationMinutes, setDurationMinutes] = useState(120)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -41,6 +51,10 @@ export function HoursPage() {
 
   useEffect(() => {
     if (restaurant) loadHours(restaurant.id)
+  }, [restaurant])
+
+  useEffect(() => {
+    if (restaurant) setDurationMinutes(restaurant.reservation_duration_minutes)
   }, [restaurant])
 
   async function loadHours(restaurantId: string) {
@@ -84,19 +98,26 @@ export function HoursPage() {
     setSaving(true)
     setError(null)
 
-    const { error } = await supabase.from('restaurant_hours').upsert(
-      days.map((d) => ({
-        restaurant_id: restaurant.id,
-        day_of_week: d.day_of_week,
-        open_time: d.closed ? null : d.open_time,
-        close_time: d.closed ? null : d.close_time,
-        closed: d.closed,
-      })),
-      { onConflict: 'restaurant_id,day_of_week' },
-    )
+    const [hoursResult, durationResult] = await Promise.all([
+      supabase.from('restaurant_hours').upsert(
+        days.map((d) => ({
+          restaurant_id: restaurant.id,
+          day_of_week: d.day_of_week,
+          open_time: d.closed ? null : d.open_time,
+          close_time: d.closed ? null : d.close_time,
+          closed: d.closed,
+        })),
+        { onConflict: 'restaurant_id,day_of_week' },
+      ),
+      supabase
+        .from('restaurants')
+        .update({ reservation_duration_minutes: durationMinutes })
+        .eq('id', restaurant.id),
+    ])
 
     setSaving(false)
-    if (error) setError(error.message)
+    if (hoursResult.error) setError(hoursResult.error.message)
+    else if (durationResult.error) setError(durationResult.error.message)
     else setSaved(true)
   }
 
@@ -113,6 +134,26 @@ export function HoursPage() {
 
         {!loading && (
           <>
+            <label className="duration-field">
+              Duración media de una reserva
+              <select
+                value={durationMinutes}
+                onChange={(e) => {
+                  setDurationMinutes(Number(e.target.value))
+                  setSaved(false)
+                }}
+              >
+                {DURATION_OPTIONS.map((minutes) => (
+                  <option key={minutes} value={minutes}>
+                    {formatDuration(minutes)}
+                  </option>
+                ))}
+              </select>
+              <span className="duration-field-hint">
+                Se usa para calcular el último hueco reservable online antes del cierre.
+              </span>
+            </label>
+
             <table className="hours-table">
               <thead>
                 <tr>
@@ -161,7 +202,7 @@ export function HoursPage() {
             </table>
 
             <button onClick={handleSave} disabled={saving} className="save-button">
-              {saving ? 'Guardando...' : 'Guardar horarios'}
+              {saving ? 'Guardando...' : 'Guardar cambios'}
             </button>
             {saved && <span className="hours-saved">Guardado ✓</span>}
           </>
