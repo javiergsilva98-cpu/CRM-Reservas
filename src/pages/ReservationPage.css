@@ -10,6 +10,28 @@
   text-align: center;
 }
 
+.reservation-page-message {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.reservation-page-message h1 {
+  font-family: 'Georgia', serif;
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.reservation-page-message p {
+  color: #6b5643;
+  margin: 0;
+}
+
 .reservation-accordion {
   display: flex;
   flex-direction: column;

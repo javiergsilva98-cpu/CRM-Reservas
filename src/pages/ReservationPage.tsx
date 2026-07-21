@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useRestaurant } from '../lib/useRestaurant'
 import { generateTimeSlots } from '../lib/timeSlots'
 import { AccordionStep } from '../components/AccordionStep'
+import { PageFallback } from '../components/PageFallback'
 import {
   CalendarIcon,
   CheckIcon,
@@ -135,9 +136,14 @@ export function ReservationPage() {
 
   if (error) {
     console.error(error)
-    return <p>No hemos encontrado este restaurante.</p>
+    return (
+      <main className="reservation-page-message">
+        <h1>No hemos encontrado este restaurante</h1>
+        <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
+      </main>
+    )
   }
-  if (loading || !restaurant) return <p>Cargando...</p>
+  if (loading || !restaurant) return <PageFallback />
 
   if (submitted) {
     return (

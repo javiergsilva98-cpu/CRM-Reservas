@@ -12,6 +12,8 @@
 - ✅ Migración `0012`: Mesas fusionado en Sala, hasta 3 salas nombrables, hasta 3 plantillas de disposición asignables por día de la semana o rango de fechas.
 - ✅ Migración `0013`: dirección y teléfono de ejemplo (placeholder) para Asador Gonsastrez.
 - ✅ Rediseño del formulario público de reserva como acordeón (comensales, fecha/hora, datos) y del carrusel "Recomendados" con parallax en la landing.
+- ✅ Migración `0014`: duración media de una reserva + huecos de 30 min en el formulario público calculados con el horario real.
+- ✅ Auditoría de rendimiento: code-splitting por ruta (CRM y landing ya no comparten un único bundle de 500kB+), fotos de platos a WebP (~60% menos peso), `lang="es"`, meta description/Open Graph, preconnect a Supabase, `tel:`/Google Maps en el contacto, pantallas de carga/error con estilo, ErrorBoundary global, limpieza de assets sin usar.
 
 ## Pendiente ahora
 

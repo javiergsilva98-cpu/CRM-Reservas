@@ -3,6 +3,7 @@ import { useRestaurant } from '../lib/useRestaurant'
 import { ScrollScrubVideo } from '../components/ScrollScrubVideo'
 import { MenuSection } from '../components/MenuSection'
 import { RecommendedCarousel } from '../components/RecommendedCarousel'
+import { PageFallback } from '../components/PageFallback'
 import { platosRecomendados } from '../data/recomendados'
 import './RestaurantPage.css'
 
@@ -12,9 +13,14 @@ export function RestaurantPage() {
 
   if (error) {
     console.error(error)
-    return <p>No hemos encontrado este restaurante.</p>
+    return (
+      <main className="restaurant-page-message">
+        <h1>No hemos encontrado este restaurante</h1>
+        <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
+      </main>
+    )
   }
-  if (loading || !restaurant) return <p>Cargando...</p>
+  if (loading || !restaurant) return <PageFallback />
 
   return (
     <main>
@@ -40,14 +46,29 @@ export function RestaurantPage() {
         videoSrc="/video/cta-scrub-asador-gonsastrez-v2.mp4"
         posterSrc="/video/cta-scrub-asador-gonsastrez-poster-v2.jpg"
         heightVh={150}
+        preload="metadata"
         revealStart={0.4}
         revealEnd={0.55}
         startFraction={0.25}
         footer={
           (restaurant.address || restaurant.phone) && (
             <div className="scrub-cta-contact">
-              {restaurant.address && <p>{restaurant.address}</p>}
-              {restaurant.phone && <p>Tel: {restaurant.phone}</p>}
+              {restaurant.address && (
+                <p>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurant.address)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {restaurant.address}
+                  </a>
+                </p>
+              )}
+              {restaurant.phone && (
+                <p>
+                  <a href={`tel:${restaurant.phone.replace(/\s+/g, '')}`}>Tel: {restaurant.phone}</a>
+                </p>
+              )}
             </div>
           )
         }

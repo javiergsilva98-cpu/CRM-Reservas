@@ -16,6 +16,8 @@ interface ScrollScrubVideoProps {
   startFraction?: number
   /** Altura del recorrido de scroll, en vh. Controla cuánto hay que scrollear para completar el scrub. */
   heightVh?: number
+  /** 'auto' para el hero (above the fold); 'metadata' para secciones más abajo, así no se descarga el vídeo entero antes de que se necesite. */
+  preload?: 'auto' | 'metadata' | 'none'
   hint?: string
   children: ReactNode
   /** Contenido que aparece pegado a la parte inferior en vez de centrado. */
@@ -35,6 +37,7 @@ export function ScrollScrubVideo({
   revealEnd,
   startFraction = 0,
   heightVh = 250,
+  preload = 'auto',
   hint,
   children,
   footer,
@@ -140,7 +143,7 @@ export function ScrollScrubVideo({
             poster={posterSrc}
             muted
             playsInline
-            preload="auto"
+            preload={preload}
             disablePictureInPicture
             disableRemotePlayback
             onLoadedMetadata={() => setReady(true)}
