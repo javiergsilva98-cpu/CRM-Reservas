@@ -28,34 +28,6 @@
   color: #b3261e;
 }
 
-.new-restaurant-form {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
-
-.new-restaurant-form input {
-  font: inherit;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #cbb9a3;
-  border-radius: 0.4rem;
-}
-
-.new-restaurant-form button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.4rem;
-  background: #2c1b10;
-  color: #f6ead9;
-  cursor: pointer;
-}
-
-.new-restaurant-form button:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
 .dashboard-table-wrapper {
   overflow-x: auto;
 }

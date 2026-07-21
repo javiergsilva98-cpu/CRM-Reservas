@@ -1,39 +1,39 @@
-# Pendiente de hacer (desde el ordenador)
+# Pendiente de hacer
 
-Checklist de las 3 cosas que hay que hacer fuera del código. Ve de arriba a abajo, en orden — cada una depende un poco de la anterior.
+## Ya hecho
 
-## 1. Copiar claves de Supabase
+- ✅ Claves de Supabase copiadas y conectadas (`.env.local` local + variables en Vercel).
+- ✅ Deploy en Vercel: https://crm-reservas.vercel.app/
+- ✅ Migraciones `0001` y `0002` (tablas + carta de Asador Gonsastrez).
 
-1. Entra en https://supabase.com/dashboard → abre tu proyecto.
-2. Menú lateral → **Project Settings** (engranaje, abajo) → **Data API**.
-3. Copia:
-   - **Project URL** (tipo `https://xxxxx.supabase.co`)
-   - **anon public key** (empieza por `eyJ...`)
-4. Pégamelos en el chat (la `anon key` es pública, no pasa nada por pegarla aquí). La `service_role key` NUNCA la copies ni me la pases.
+## Pendiente ahora — en este orden
 
-## 2. Crear tu usuario owner + vincularlo
+### 1. Ejecutar la migración `0005_owner_signup.sql`
 
-1. Dashboard → **Authentication** → pestaña **Users** → botón **Add user** → **Create new user**.
-2. Email: `javiergsilva98@gmail.com` (dime si quieres otro antes de crearlo).
-3. Marca **Auto Confirm User**. Sin contraseña (usamos magic link). **Create user**.
-4. Ve a **SQL Editor** → **New query**.
-5. Pega el contenido de `supabase/migrations/0003_link_owner.sql` (ya está en el repo) y **Run**.
-6. Debe decir 1 fila insertada. Si sale 0, revisa que el email coincide exactamente con el del paso 2.
+SQL Editor de Supabase → pega el contenido de `supabase/migrations/0005_owner_signup.sql` → **Run**.
 
-## 3. Deploy en Vercel
+Esto añade la columna `owner_email` a `restaurants` (ya la deja puesta a tu email para Asador Gonsastrez) y permite que la primera persona con ese email cree su cuenta y quede vinculada como dueña.
 
-1. Entra en https://vercel.com y crea cuenta / login (mejor con GitHub, así conecta directo).
-2. **Add New...** → **Project**.
-3. **Import Git Repository** → selecciona `javiergsilva98-cpu/crm-reservas` (si Vercel pide permiso para acceder al repo, acéptalo).
-4. Vercel debería detectar el framework automáticamente (Vite) con build command `npm run build` y output directory `dist`. No hace falta tocar nada ahí.
-5. Antes de darle a **Deploy**, en la sección **Environment Variables** añade estas 3 (los mismos valores que uses en `.env.local`):
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-   - `VITE_RESTAURANT_SLUG` = `asador-gonsastrez`
-6. **Deploy**. Te dará una URL tipo `crm-reservas.vercel.app` para probar en real.
+### 2. Crear tu cuenta desde el CRM (esto crea tu usuario de Auth)
 
-**Aviso plan gratuito:** el plan Hobby de Vercel es para uso no comercial. Para desarrollo/demo está bien, pero antes de cobrar a un restaurante real por esto habrá que pasar a plan Pro (~20$/mes). No hace falta decidirlo ahora, solo que quede anotado.
+1. Abre `https://crm-reservas.vercel.app/asador-gonsastrez/crm/login`
+2. Haz clic en **"Créala aquí"** (modo registro).
+3. Email: `javiergsilva98@gmail.com`, y la contraseña que quieras (mínimo 6 caracteres).
+4. Según la configuración de tu proyecto, puede pedirte confirmar el correo (revisa tu bandeja). Si no pide nada, entrarás directo.
+
+### 3. Ejecutar la migración `0004_platform_admins.sql`
+
+Ahora que ya existe tu usuario (paso 2), en el SQL Editor pega el contenido de `supabase/migrations/0004_platform_admins.sql` → **Run**. Esto te da acceso de **superadmin** (ver/gestionar todos los restaurantes en `/admin`).
+
+**Importante el orden**: este paso tiene que ir *después* del paso 2 — la migración busca tu usuario por email, y hasta que no te registras, ese usuario no existe.
+
+### 4. Comprobar accesos
+
+- `https://crm-reservas.vercel.app/asador-gonsastrez/crm` → deberías ver el panel de reservas de Asador Gonsastrez (te vinculas como owner automáticamente al entrar).
+- `https://crm-reservas.vercel.app/admin/login` → pide el enlace mágico a tu email y entra al panel de superadmin (listado de restaurantes).
+
+Nota: `0003_link_owner.sql` ha quedado obsoleta con este nuevo flujo — no hace falta ejecutarla, la vinculación ahora pasa por el registro con contraseña + `0005`.
 
 ---
 
-Cuando hagas el paso 1, pégame la URL y la anon key en el chat y seguimos desde ahí (yo dejo el `.env.local` configurado). Los pasos 2 y 3 los puedes hacer tú directamente siguiendo esta guía, o pedirme que te acompañe paso a paso otra vez cuando llegues.
+**Aviso plan gratuito (recordatorio):** Vercel Hobby es para uso no comercial (vale para desarrollo/demo); Supabase Free pausa el proyecto tras ~7 días sin actividad. Nada urgente, solo que quede anotado antes de vender esto de verdad.

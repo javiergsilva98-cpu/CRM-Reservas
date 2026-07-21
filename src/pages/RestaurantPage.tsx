@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useRestaurant } from '../lib/useRestaurant'
 import { ScrollDoorHero } from '../components/ScrollDoorHero'
 import { MenuSection } from '../components/MenuSection'
-import './LandingPage.css'
+import './RestaurantPage.css'
 
-export function LandingPage() {
-  const { restaurant, loading, error } = useRestaurant()
+export function RestaurantPage() {
+  const { slug } = useParams<{ slug: string }>()
+  const { restaurant, loading, error } = useRestaurant(slug ?? '')
 
   if (error) return <p>Error al conectar con Supabase: {error}</p>
   if (loading || !restaurant) return <p>Cargando...</p>
@@ -22,7 +23,7 @@ export function LandingPage() {
       <section className="landing-cta">
         <h2>¿Te apetece venir?</h2>
         <p>Resérvate una mesa en un minuto.</p>
-        <Link className="landing-cta-button" to="/reservar">
+        <Link className="landing-cta-button" to={`/${slug}/reservar`}>
           Reservar mesa
         </Link>
 

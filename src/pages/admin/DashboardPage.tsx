@@ -1,42 +1,63 @@
 import { useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
-import type { Reservation, ReservationStatus } from '../../types'
+import type { Restaurant } from '../../types'
 import './DashboardPage.css'
 
-const STATUS_LABELS: Record<ReservationStatus, string> = {
-  pending: 'Pendiente',
-  confirmed: 'Confirmada',
-  cancelled: 'Cancelada',
-  seated: 'Sentados',
-  no_show: 'No-show',
-}
-
 export function DashboardPage() {
-  const [reservations, setReservations] = useState<Reservation[]>([])
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const [name, setName] = useState('')
+  const [slug, setSlug] = useState('')
+  const [ownerEmail, setOwnerEmail] = useState('')
+  const [creating, setCreating] = useState(false)
+
   useEffect(() => {
-    loadReservations()
+    loadRestaurants()
   }, [])
 
-  async function loadReservations() {
+  async function loadRestaurants() {
     setLoading(true)
     const { data, error } = await supabase
-      .from('reservations')
+      .from('restaurants')
       .select('*')
-      .order('reservation_date', { ascending: true })
-      .order('reservation_time', { ascending: true })
+      .order('created_at', { ascending: true })
 
     if (error) setError(error.message)
-    else setReservations(data ?? [])
+    else setRestaurants(data ?? [])
     setLoading(false)
   }
 
-  async function updateStatus(id: string, status: ReservationStatus) {
+  async function handleCreate(event: FormEvent) {
+    event.preventDefault()
+    setCreating(true)
+    setError(null)
+
+    const { error } = await supabase.from('restaurants').insert({
+      name,
+      slug,
+      owner_email: ownerEmail,
+    })
+
+    setCreating(false)
+    if (error) {
+      setError(error.message)
+      return
+    }
+
+    setName('')
+    setSlug('')
+    setOwnerEmail('')
+    loadRestaurants()
+  }
+
+  async function toggleActive(id: string, active: boolean) {
     const { error } = await supabase
-      .from('reservations')
-      .update({ status })
+      .from('restaurants')
+      .update({ active: !active })
       .eq('id', id)
 
     if (error) {
@@ -44,8 +65,8 @@ export function DashboardPage() {
       return
     }
 
-    setReservations((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status } : r)),
+    setRestaurants((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, active: !active } : r)),
     )
   }
 
@@ -56,60 +77,76 @@ export function DashboardPage() {
   return (
     <main className="dashboard-page">
       <header className="dashboard-header">
-        <h1>Reservas</h1>
+        <h1>Restaurantes</h1>
         <button onClick={handleSignOut}>Cerrar sesión</button>
       </header>
 
       {error && <p className="dashboard-error">{error}</p>}
+
+      <form onSubmit={handleCreate} className="new-restaurant-form">
+        <input
+          type="text"
+          placeholder="Nombre"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="slug (ej. casa-paco)"
+          required
+          pattern="[a-z0-9-]+"
+          value={slug}
+          onChange={(e) => setSlug(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email del dueño"
+          required
+          value={ownerEmail}
+          onChange={(e) => setOwnerEmail(e.target.value)}
+        />
+        <button type="submit" disabled={creating}>
+          {creating ? 'Creando...' : 'Añadir restaurante'}
+        </button>
+      </form>
+
       {loading && <p>Cargando...</p>}
 
-      {!loading && reservations.length === 0 && (
-        <p>No hay reservas todavía.</p>
+      {!loading && restaurants.length === 0 && (
+        <p>
+          No hay restaurantes todavía (o tu usuario no tiene acceso de
+          superadmin — revisa la tabla <code>platform_admins</code>).
+        </p>
       )}
 
-      {!loading && reservations.length > 0 && (
+      {!loading && restaurants.length > 0 && (
         <div className="dashboard-table-wrapper">
           <table className="dashboard-table">
             <thead>
               <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Cliente</th>
-                <th>Personas</th>
-                <th>Contacto</th>
-                <th>Notas</th>
+                <th>Nombre</th>
+                <th>Slug</th>
+                <th>Email dueño</th>
                 <th>Estado</th>
+                <th>Enlaces</th>
               </tr>
             </thead>
             <tbody>
-              {reservations.map((r) => (
+              {restaurants.map((r) => (
                 <tr key={r.id}>
-                  <td>{r.reservation_date}</td>
-                  <td>{r.reservation_time}</td>
-                  <td>{r.customer_name}</td>
-                  <td>{r.party_size}</td>
+                  <td>{r.name}</td>
+                  <td>{r.slug}</td>
+                  <td>{r.owner_email}</td>
                   <td>
-                    {r.customer_phone && <div>{r.customer_phone}</div>}
-                    {r.customer_email && <div>{r.customer_email}</div>}
+                    <button onClick={() => toggleActive(r.id, r.active)}>
+                      {r.active ? 'Activo' : 'Inactivo'}
+                    </button>
                   </td>
-                  <td>{r.notes}</td>
                   <td>
-                    <select
-                      value={r.status}
-                      onChange={(e) =>
-                        updateStatus(
-                          r.id,
-                          e.target.value as ReservationStatus,
-                        )
-                      }
-                      className={`status-select status-${r.status}`}
-                    >
-                      {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                        <option key={value} value={value}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
+                    <Link to={`/${r.slug}`}>Landing</Link>
+                    {' · '}
+                    <Link to={`/${r.slug}/crm`}>CRM</Link>
                   </td>
                 </tr>
               ))}

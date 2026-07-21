@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useRestaurant } from '../lib/useRestaurant'
 import './ReservationPage.css'
 
 export function ReservationPage() {
-  const { restaurant, loading, error } = useRestaurant()
+  const { slug } = useParams<{ slug: string }>()
+  const { restaurant, loading, error } = useRestaurant(slug ?? '')
 
   const [customerName, setCustomerName] = useState('')
   const [customerEmail, setCustomerEmail] = useState('')
@@ -55,7 +56,7 @@ export function ReservationPage() {
           Hemos recibido tu solicitud para {restaurant.name}. Te confirmaremos
           la reserva lo antes posible.
         </p>
-        <Link to="/">Volver al inicio</Link>
+        <Link to={`/${slug}`}>Volver al inicio</Link>
       </main>
     )
   }

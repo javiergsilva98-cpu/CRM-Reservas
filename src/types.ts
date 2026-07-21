@@ -14,6 +14,7 @@ export interface Restaurant {
   email: string | null
   address: string | null
   active: boolean
+  owner_email: string | null
   created_at: string
 }
 

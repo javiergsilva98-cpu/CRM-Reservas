@@ -10,5 +10,3 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-export const RESTAURANT_SLUG = import.meta.env.VITE_RESTAURANT_SLUG as string
