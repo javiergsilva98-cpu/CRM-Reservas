@@ -125,14 +125,242 @@
   font-size: 0.75rem;
 }
 
-.sala-table-zone-input {
+.sala-table-edit-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
   width: 100%;
   margin-top: 0.25rem;
+}
+
+.sala-table-edit-controls button,
+.sala-table-edit-controls select {
+  width: 100%;
   font: inherit;
   font-size: 0.7rem;
   padding: 0.15rem 0.3rem;
   border: 1px solid #cbb9a3;
   border-radius: 0.3rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sala-cancel {
+  background: transparent !important;
+  color: #2c1b10 !important;
+  border: 1px solid #cbb9a3 !important;
+}
+
+.sala-preset-banner {
+  margin: -0.75rem 0 1.25rem;
+  font-size: 0.85rem;
+  color: #5a4633;
+  font-style: italic;
+}
+
+.sala-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sala-tab {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.sala-tab button {
+  border: none;
+  background: #fff;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #2c1b10;
+}
+
+.sala-tab-active button {
+  background: #2c1b10;
+  color: #f6ead9;
+}
+
+.sala-tab-delete {
+  border: none;
+  background: transparent;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  color: #b3261e;
+}
+
+.sala-add-room-button {
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px dashed #cbb9a3;
+  border-radius: 0.4rem;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #2c1b10;
+}
+
+.sala-add-room-form,
+.sala-add-table-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.sala-add-room-form input,
+.sala-add-table-form input {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+}
+
+.sala-add-table-form input[type='number'] {
+  width: 5rem;
+}
+
+.sala-add-room-form button,
+.sala-add-table-form button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #2c1b10;
+  color: #f6ead9;
+  cursor: pointer;
+}
+
+.sala-preset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sala-preset-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5d9c7;
+  border-radius: 0.4rem;
+}
+
+.sala-save-panel {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.6rem;
+  background: #fff;
+  max-width: 32rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sala-save-panel h2 {
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.sala-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.sala-save-days p {
+  margin: 0.5rem 0 0.35rem;
+  font-size: 0.85rem;
+  color: #5a4633;
+}
+
+.sala-weekdays {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.sala-weekdays button {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.sala-weekday-selected {
+  background: #2c1b10 !important;
+  color: #f6ead9;
+  border-color: #2c1b10 !important;
+}
+
+.sala-date-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sala-date-range input {
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+}
+
+.sala-preset-target {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sala-preset-target label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.sala-preset-target select,
+.sala-preset-target input {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbb9a3;
+  border-radius: 0.4rem;
+}
+
+.sala-save-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.sala-save-actions button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #2c1b10;
+  color: #f6ead9;
+  cursor: pointer;
+}
+
+.sala-save-actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
 .sala-side {

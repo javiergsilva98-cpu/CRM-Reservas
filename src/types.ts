@@ -80,11 +80,48 @@ export interface RestaurantTable {
   name: string
   capacity: number
   active: boolean
-  zone: string | null
+  room_id: string | null
   position_x: number | null
   position_y: number | null
   created_at: string
 }
+
+export interface RestaurantRoom {
+  id: string
+  restaurant_id: string
+  name: string
+  created_at: string
+}
+
+export interface LayoutPreset {
+  id: string
+  restaurant_id: string
+  name: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface LayoutPresetTable {
+  id: string
+  preset_id: string
+  table_id: string
+  active: boolean
+  position_x: number | null
+  position_y: number | null
+  room_id: string | null
+}
+
+export interface LayoutScheduleEntry {
+  id: string
+  restaurant_id: string
+  preset_id: string
+  day_of_week: number | null
+  date_start: string | null
+  date_end: string | null
+  created_at: string
+}
+
+export const WEEKDAY_LABELS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
 export interface RestaurantHours {
   id: string

@@ -7,7 +7,6 @@ import { DashboardPage as SuperAdminDashboardPage } from './pages/admin/Dashboar
 import { LoginPage as CrmLoginPage } from './pages/crm/LoginPage'
 import { DashboardPage as CrmDashboardPage } from './pages/crm/DashboardPage'
 import { NewReservationPage } from './pages/crm/NewReservationPage'
-import { TablesPage } from './pages/crm/TablesPage'
 import { HoursPage } from './pages/crm/HoursPage'
 import { AvailabilityPage } from './pages/crm/AvailabilityPage'
 import { AnalyticsPage } from './pages/crm/AnalyticsPage'
@@ -46,14 +45,6 @@ function App() {
           element={
             <ProtectedRoute>
               <NewReservationPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/:slug/crm/mesas"
-          element={
-            <ProtectedRoute>
-              <TablesPage />
             </ProtectedRoute>
           }
         />
