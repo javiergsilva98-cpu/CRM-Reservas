@@ -18,6 +18,9 @@ interface ScrollScrubVideoProps {
   children: ReactNode
   /** Contenido que aparece pegado a la parte inferior en vez de centrado. */
   footer?: ReactNode
+  /** Ventana de revelado propia del footer; por defecto solo aparece al llegar al final del scroll. */
+  footerRevealStart?: number
+  footerRevealEnd?: number
 }
 
 const LERP_FACTOR = 0.22
@@ -32,6 +35,8 @@ export function ScrollScrubVideo({
   hint,
   children,
   footer,
+  footerRevealStart = 0.92,
+  footerRevealEnd = 1,
 }: ScrollScrubVideoProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -42,6 +47,10 @@ export function ScrollScrubVideo({
   const [ready, setReady] = useState(false)
 
   const reveal = Math.min(1, Math.max(0, (progress - revealStart) / (revealEnd - revealStart)))
+  const footerReveal = Math.min(
+    1,
+    Math.max(0, (progress - footerRevealStart) / (footerRevealEnd - footerRevealStart)),
+  )
 
   useEffect(() => {
     const video = videoRef.current
@@ -144,7 +153,7 @@ export function ScrollScrubVideo({
         {footer && (
           <div
             className="scroll-scrub-footer"
-            style={{ opacity: reveal, filter: `blur(${(1 - reveal) * 10}px)` }}
+            style={{ opacity: footerReveal, filter: `blur(${(1 - footerReveal) * 10}px)` }}
           >
             {footer}
           </div>
