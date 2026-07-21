@@ -19,4 +19,4 @@ No hay ejecución automática todavía: cuando aparezca un archivo nuevo aquí, 
 | `0009_customers.sql` | Tabla `customers` (CRM) + función `find_or_create_customer` | ✅ 2026-07-21 |
 | `0010_reservations_customer_link.sql` | Vincula `reservations.customer_id`, separa notas cliente/internas, migra datos de contacto existentes a `customers` | ✅ 2026-07-21 |
 | `0011_sala.sql` | Añade `zone`/`position_x`/`position_y` a `restaurant_tables` y `table_id` a `reservations`, para el plano visual de sala | ✅ 2026-07-21 |
-| `0012_rooms_and_layout_presets.sql` | `restaurant_rooms` (hasta 3 salas, sustituye `zone`), `restaurant_layout_presets`/`_preset_tables` (hasta 3 plantillas) y `restaurant_layout_schedule` (asignación por día de la semana o rango de fechas) | ⏳ pendiente |
+| `0012_rooms_and_layout_presets.sql` | `restaurant_rooms` (hasta 3 salas, sustituye `zone`), `restaurant_layout_presets`/`_preset_tables` (hasta 3 plantillas) y `restaurant_layout_schedule` (asignación por día de la semana o rango de fechas) | ✅ 2026-07-21 |

@@ -9,15 +9,7 @@
 - ✅ CRM con Reservas, Nueva reserva, Disponibilidad, Mesas, Horarios y Analítica.
 - ✅ Migraciones `0009` y `0010`: `customers` como entidad propia del CRM (alergias, dieta, tags, GDPR, historial de reservas), separada de `reservations`.
 - ✅ Migración `0011` y pestaña **Sala**: plano visual de mesas (arrastrar para colocar, zonas, estado libre/reservada/ocupada) y asignación de reservas a mesa concreta.
-
-## Pendiente ahora — cambia el modelo de mesas, ejecutar antes de usar Sala
-
-### Ejecutar `0012_rooms_and_layout_presets.sql`
-
-- Fusiona la pestaña **Mesas** dentro de **Sala** (ya no existe pestaña Mesas aparte; las mesas se crean desde Sala).
-- Añade **salas** (hasta 3, nombrables — ej. "Comedor", "Terraza") sustituyendo a la "zona" de texto libre.
-- Añade **plantillas** (hasta 3, con nombre) que guardan una disposición completa de mesas y se pueden asignar a días de la semana (ej. entre semana vs. fin de semana) o a un rango de fechas (ej. terraza solo en verano).
-- Cualquier "zona" de texto que ya hubieras escrito en el editor de Sala se convierte automáticamente en una sala real con ese nombre — no se pierde nada.
+- ✅ Migración `0012`: Mesas fusionado en Sala, hasta 3 salas nombrables, hasta 3 plantillas de disposición asignables por día de la semana o rango de fechas.
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 
