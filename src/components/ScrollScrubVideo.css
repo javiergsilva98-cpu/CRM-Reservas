@@ -59,6 +59,17 @@
   color: #f6ead9;
 }
 
+.scroll-scrub-footer {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-align: center;
+  padding: 0 1.5rem;
+  color: #f6ead9;
+}
+
 .scroll-scrub-hint {
   position: absolute;
   bottom: 2rem;

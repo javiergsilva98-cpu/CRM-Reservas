@@ -16,6 +16,8 @@ interface ScrollScrubVideoProps {
   startFraction?: number
   hint?: string
   children: ReactNode
+  /** Contenido que aparece pegado a la parte inferior en vez de centrado. */
+  footer?: ReactNode
 }
 
 const LERP_FACTOR = 0.22
@@ -29,6 +31,7 @@ export function ScrollScrubVideo({
   startFraction = 0,
   hint,
   children,
+  footer,
 }: ScrollScrubVideoProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -137,6 +140,15 @@ export function ScrollScrubVideo({
         >
           {children}
         </div>
+
+        {footer && (
+          <div
+            className="scroll-scrub-footer"
+            style={{ opacity: reveal, filter: `blur(${(1 - reveal) * 10}px)` }}
+          >
+            {footer}
+          </div>
+        )}
 
         {hint && ready && progress < 0.1 && <p className="scroll-scrub-hint">{hint}</p>}
       </div>

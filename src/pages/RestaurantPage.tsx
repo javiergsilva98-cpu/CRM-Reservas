@@ -35,21 +35,22 @@ export function RestaurantPage() {
       <ScrollScrubVideo
         videoSrc="/video/cta-scrub-asador-gonsastrez-v2.mp4"
         posterSrc="/video/cta-scrub-asador-gonsastrez-poster-v2.jpg"
-        revealStart={0.75}
-        revealEnd={0.9}
+        revealStart={0.55}
+        revealEnd={0.7}
         startFraction={0.25}
+        footer={
+          (restaurant.address || restaurant.phone) && (
+            <div className="scrub-cta-contact">
+              {restaurant.address && <p>{restaurant.address}</p>}
+              {restaurant.phone && <p>Tel: {restaurant.phone}</p>}
+            </div>
+          )
+        }
       >
         <h2 className="scrub-cta-heading">Reserva en un minuto</h2>
         <Link className="landing-cta-button" to={`/${slug}/reservar`}>
           Reservar mesa
         </Link>
-
-        {(restaurant.address || restaurant.phone) && (
-          <div className="scrub-cta-contact">
-            {restaurant.address && <p>{restaurant.address}</p>}
-            {restaurant.phone && <p>Tel: {restaurant.phone}</p>}
-          </div>
-        )}
       </ScrollScrubVideo>
     </main>
   )
