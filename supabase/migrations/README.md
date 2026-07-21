@@ -16,5 +16,5 @@ No hay ejecución automática todavía: cuando aparezca un archivo nuevo aquí, 
 | `0006_platform_admin_reservations.sql` | Los superadmins ven/gestionan reservas de cualquier restaurante | ✅ 2026-07-21 |
 | `0007_tables.sql` | Funciones `is_platform_admin`/`is_staff_of` + tabla `restaurant_tables` (mesas) | ✅ 2026-07-21 |
 | `0008_hours.sql` | Tabla `restaurant_hours` (horario de apertura por día) | ✅ 2026-07-21 |
-| `0009_customers.sql` | Tabla `customers` (CRM) + función `find_or_create_customer` | ⏳ pendiente |
-| `0010_reservations_customer_link.sql` | Vincula `reservations.customer_id`, separa notas cliente/internas, migra datos de contacto existentes a `customers` | ⏳ pendiente (ejecutar *después* de `0009`) |
+| `0009_customers.sql` | Tabla `customers` (CRM) + función `find_or_create_customer` | ✅ 2026-07-21 |
+| `0010_reservations_customer_link.sql` | Vincula `reservations.customer_id`, separa notas cliente/internas, migra datos de contacto existentes a `customers` | ✅ 2026-07-21 |
