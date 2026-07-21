@@ -1,0 +1,137 @@
+.accordion-step {
+  border: 1px solid #e3d3bc;
+  border-radius: 1rem;
+  background: #fffaf2;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.accordion-step--open {
+  border-color: #d8a25e;
+  box-shadow: 0 6px 20px rgba(44, 27, 16, 0.08);
+}
+
+.accordion-step:not(.accordion-step--open):not(.accordion-step--done) {
+  opacity: 0.55;
+}
+
+.accordion-step-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: left;
+  color: #2c1b10;
+  cursor: default;
+}
+
+.accordion-step--done .accordion-step-header {
+  cursor: pointer;
+}
+
+.accordion-step-badge {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #ece0cc;
+  color: #6b5643;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.accordion-step--open .accordion-step-badge {
+  background: #2c1b10;
+  color: #f6ead9;
+}
+
+.accordion-step--done .accordion-step-badge {
+  background: #d8a25e;
+  color: #2c1b10;
+}
+
+.accordion-step-icon {
+  flex-shrink: 0;
+  color: #d8a25e;
+  display: flex;
+}
+
+.accordion-step-heading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.accordion-step-title {
+  font-weight: 600;
+}
+
+.accordion-step--open .accordion-step-title {
+  color: #2c1b10;
+}
+
+.accordion-step-summary {
+  font-size: 0.85rem;
+  color: #8a7860;
+}
+
+.accordion-step-chevron {
+  flex-shrink: 0;
+  color: #8a7860;
+}
+
+.accordion-step-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.accordion-step--open .accordion-step-body {
+  grid-template-rows: 1fr;
+}
+
+.accordion-step-body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.accordion-step-content {
+  padding: 0 1.1rem 1.25rem;
+}
+
+.accordion-step-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 1.1rem 0.5rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.3rem;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #8a7860;
+  cursor: pointer;
+  border-radius: 0.4rem;
+}
+
+.accordion-step-back:hover {
+  background: #f1e6d3;
+  color: #2c1b10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-step,
+  .accordion-step-body {
+    transition: none;
+  }
+}
