@@ -2,6 +2,8 @@ import { Link, useParams } from 'react-router-dom'
 import { useRestaurant } from '../lib/useRestaurant'
 import { ScrollScrubVideo } from '../components/ScrollScrubVideo'
 import { MenuSection } from '../components/MenuSection'
+import { RecommendedCarousel } from '../components/RecommendedCarousel'
+import { platosRecomendados } from '../data/recomendados'
 import './RestaurantPage.css'
 
 export function RestaurantPage() {
@@ -31,6 +33,8 @@ export function RestaurantPage() {
       </ScrollScrubVideo>
 
       <MenuSection />
+
+      <RecommendedCarousel platos={platosRecomendados} />
 
       <ScrollScrubVideo
         videoSrc="/video/cta-scrub-asador-gonsastrez-v2.mp4"
