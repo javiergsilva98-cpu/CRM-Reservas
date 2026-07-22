@@ -24,6 +24,8 @@ export interface Restaurant {
   active: boolean
   owner_email: string | null
   reservation_duration_minutes: number
+  meta_description: string | null
+  og_image_url: string | null
   created_at: string
 }
 

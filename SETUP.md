@@ -14,12 +14,18 @@
 - ✅ Rediseño del formulario público de reserva como acordeón (comensales, fecha/hora, datos) y del carrusel "Recomendados" con parallax en la landing.
 - ✅ Migración `0014`: duración media de una reserva + huecos de 30 min en el formulario público calculados con el horario real.
 - ✅ Auditoría de rendimiento: code-splitting por ruta (CRM y landing ya no comparten un único bundle de 500kB+), fotos de platos a WebP (~60% menos peso), `lang="es"`, meta description/Open Graph, preconnect a Supabase, `tel:`/Google Maps en el contacto, pantallas de carga/error con estilo, ErrorBoundary global, limpieza de assets sin usar.
+- ✅ Meta tags por restaurante: función edge de Vercel (`api/meta.ts`) que sirve title/description/Open Graph específicos de cada restaurante (según su slug), en vez de los valores fijos de Asador Gonsastrez para todo el sitio.
+- ✅ Paginación de clientes en el CRM: selector de 25/50/100 por página + navegación anterior/siguiente.
 
 ## Pendiente ahora
 
 ### Ejecutar `0014_reservation_duration.sql`
 
 Añade `restaurants.reservation_duration_minutes` (por defecto 120). Se usa para calcular, junto con el horario de cada día (pestaña **Horarios** del CRM), el último hueco reservable online antes del cierre, y para generar los huecos de media hora del formulario público de reserva. Después de ejecutarla, entra en **Horarios** y confirma/ajusta la "Duración media de una reserva" para Asador Gonsastrez (por defecto queda en 2h).
+
+### Ejecutar `0015_meta_tags.sql`
+
+Añade `restaurants.meta_description` y `og_image_url`. Ya trae valores por defecto para Asador Gonsastrez (los mismos textos que había fijos en `index.html`). Para un restaurante nuevo, rellena estas dos columnas al darlo de alta; si las dejas vacías, el sitio genera una descripción automática ("Reserva mesa online en {nombre}.") y reutiliza la imagen del vídeo de portada como `og:image`. De momento se editan directamente en Supabase (no hay campo en el CRM todavía) — dilo si quieres que añada un campo para esto en el panel.
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 

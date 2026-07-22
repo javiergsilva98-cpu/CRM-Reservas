@@ -15,10 +15,16 @@ export function CustomersPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [pageSize, setPageSize] = useState(25)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     if (restaurant) loadCustomers(restaurant.id)
   }, [restaurant])
+
+  useEffect(() => {
+    setPage(1)
+  }, [search, pageSize])
 
   async function loadCustomers(restaurantId: string) {
     setLoading(true)
@@ -45,6 +51,10 @@ export function CustomersPage() {
       )
     : customers
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
+  const currentPage = Math.min(page, totalPages)
+  const paginated = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
   return (
     <CrmLayout slug={slug ?? ''}>
       <main className="customers-page">
@@ -52,47 +62,83 @@ export function CustomersPage() {
 
         {error && <p className="dashboard-error">{error}</p>}
 
-        <input
-          type="search"
-          placeholder="Buscar por nombre, teléfono, email o tag..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="customers-search"
-        />
+        <div className="customers-toolbar">
+          <input
+            type="search"
+            placeholder="Buscar por nombre, teléfono, email o tag..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="customers-search"
+          />
+
+          <label className="customers-page-size">
+            Ver
+            <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+            a la vez
+          </label>
+        </div>
 
         {loading && <p>Cargando...</p>}
         {!loading && filtered.length === 0 && <p>No hay clientes todavía.</p>}
 
         {!loading && filtered.length > 0 && (
-          <table className="customers-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Contacto</th>
-                <th>Visitas</th>
-                <th>No-shows</th>
-                <th>Tags</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((c) => (
-                <tr key={c.id}>
-                  <td>
-                    <Link to={`/${slug}/crm/clientes/${c.id}`}>
-                      {c.first_name} {c.last_name}
-                    </Link>
-                  </td>
-                  <td>
-                    {c.phone && <div>{c.phone}</div>}
-                    {c.email && <div>{c.email}</div>}
-                  </td>
-                  <td>{c.visits_count}</td>
-                  <td>{c.no_show_count}</td>
-                  <td>{c.tags.join(', ')}</td>
+          <>
+            <table className="customers-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Contacto</th>
+                  <th>Visitas</th>
+                  <th>No-shows</th>
+                  <th>Tags</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {paginated.map((c) => (
+                  <tr key={c.id}>
+                    <td>
+                      <Link to={`/${slug}/crm/clientes/${c.id}`}>
+                        {c.first_name} {c.last_name}
+                      </Link>
+                    </td>
+                    <td>
+                      {c.phone && <div>{c.phone}</div>}
+                      {c.email && <div>{c.email}</div>}
+                    </td>
+                    <td>{c.visits_count}</td>
+                    <td>{c.no_show_count}</td>
+                    <td>{c.tags.join(', ')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {totalPages > 1 && (
+              <div className="customers-pagination">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => p - 1)}
+                  disabled={currentPage <= 1}
+                >
+                  ← Anterior
+                </button>
+                <span>
+                  Página {currentPage} de {totalPages} ({filtered.length} clientes)
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => p + 1)}
+                  disabled={currentPage >= totalPages}
+                >
+                  Siguiente →
+                </button>
+              </div>
+            )}
+          </>
         )}
       </main>
     </CrmLayout>

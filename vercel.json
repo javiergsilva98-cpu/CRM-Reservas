@@ -1,3 +1,7 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/:slug((?!admin)[^/.]+)", "destination": "/api/meta" },
+    { "source": "/:slug((?!admin)[^/.]+)/reservar", "destination": "/api/meta" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
