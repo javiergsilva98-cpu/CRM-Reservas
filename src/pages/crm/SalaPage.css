@@ -401,6 +401,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .sala-reservation-selected {
@@ -408,7 +409,16 @@
   background: #f1e3cd;
 }
 
-.sala-unassign {
+.sala-reservation-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.sala-unassign,
+.sala-confirm-arrival {
   padding: 0.25rem 0.6rem;
   font-size: 0.75rem;
   border: none;
@@ -416,12 +426,31 @@
   background: #2c1b10;
   color: #f6ead9;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.sala-confirm-arrival {
+  background: #4a7a4a;
+}
+
+.sala-arrived-badge {
+  font-size: 0.75rem;
+  color: #4a7a4a;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .sala-hint {
   margin-top: 0.5rem;
   font-size: 0.8rem;
   color: #5a4633;
+}
+
+.sala-capacity-warning {
+  flex: 1 0 100%;
+  font-size: 0.75rem;
+  color: #9a6a1e;
+  cursor: default;
 }
 
 .dashboard-error {

@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import { useRestaurant } from '../../lib/useRestaurant'
 import { CrmLayout } from '../../components/CrmLayout'
+import { timesOverlap } from '../../lib/timeSlots'
 import {
   WEEKDAY_LABELS,
   type LayoutPreset,
@@ -236,6 +237,11 @@ export function SalaPage() {
     [reservations],
   )
 
+  const maxTableCapacity = useMemo(
+    () => effectiveTables.filter((t) => t.active).reduce((max, t) => Math.max(max, t.capacity), 0),
+    [effectiveTables],
+  )
+
   function statusOf(tableId: string): TableStatus {
     const list = reservationsByTable[tableId] ?? []
     if (list.some((r) => r.status === 'seated')) return 'occupied'
@@ -258,6 +264,17 @@ export function SalaPage() {
       return
     }
 
+    const reservation = reservations.find((r) => r.id === selectedReservationId)
+    if (!reservation || !restaurant) return
+
+    const conflict = (reservationsByTable[tableId] ?? []).some((r) =>
+      timesOverlap(r.reservation_time, reservation.reservation_time, restaurant.reservation_duration_minutes),
+    )
+    if (conflict) {
+      setError('Esa mesa ya tiene otra reserva a esa hora.')
+      return
+    }
+
     const { error: assignError } = await supabase
       .from('reservations')
       .update({ table_id: tableId })
@@ -270,6 +287,19 @@ export function SalaPage() {
 
     setSelectedReservationId(null)
     setActiveTableId(tableId)
+    if (restaurant) load(restaurant.id)
+  }
+
+  async function confirmArrival(reservationId: string) {
+    const { error: statusError } = await supabase
+      .from('reservations')
+      .update({ status: 'seated' })
+      .eq('id', reservationId)
+
+    if (statusError) {
+      setError(statusError.message)
+      return
+    }
     if (restaurant) load(restaurant.id)
   }
 
@@ -362,14 +392,18 @@ export function SalaPage() {
     const index = tables.filter((t) => (t.room_id ?? null) === roomId).length
     const pos = defaultPosition(index)
 
-    const { error: addError } = await supabase.from('restaurant_tables').insert({
-      restaurant_id: restaurant.id,
-      name: newTableName,
-      capacity: newTableCapacity,
-      room_id: roomId,
-      position_x: pos.x,
-      position_y: pos.y,
-    })
+    const { data, error: addError } = await supabase
+      .from('restaurant_tables')
+      .insert({
+        restaurant_id: restaurant.id,
+        name: newTableName,
+        capacity: newTableCapacity,
+        room_id: roomId,
+        position_x: pos.x,
+        position_y: pos.y,
+      })
+      .select()
+      .single()
 
     if (addError) {
       setError(addError.message)
@@ -377,7 +411,11 @@ export function SalaPage() {
     }
     setNewTableName('')
     setNewTableCapacity(2)
-    await load(restaurant.id)
+    setTables((prev) => [...prev, data])
+    setPositions((prev) => ({
+      ...prev,
+      [data.id]: { x: pos.x, y: pos.y, active: true, room_id: roomId },
+    }))
   }
 
   function openSavePanel() {
@@ -722,8 +760,15 @@ export function SalaPage() {
                           )
                         }
                       >
-                        <strong>{r.reservation_time.slice(0, 5)}</strong>{' '}
-                        {customerName(r)} · {r.party_size}p
+                        <span className="sala-reservation-line">
+                          <strong>{r.reservation_time.slice(0, 5)}</strong>{' '}
+                          {customerName(r)} · {r.party_size}p
+                        </span>
+                        {maxTableCapacity > 0 && r.party_size > maxTableCapacity && (
+                          <span className="sala-capacity-warning">
+                            ⚠ ninguna mesa individual llega a {r.party_size}p (máx. {maxTableCapacity}p) — une mesas o llama al cliente
+                          </span>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -748,12 +793,24 @@ export function SalaPage() {
                             <strong>{r.reservation_time.slice(0, 5)}</strong>{' '}
                             {customerName(r)} · {r.party_size}p
                           </span>
-                          <button
-                            className="sala-unassign"
-                            onClick={() => unassignReservation(r.id)}
-                          >
-                            Quitar
-                          </button>
+                          <span className="sala-reservation-actions">
+                            {r.status === 'seated' ? (
+                              <span className="sala-arrived-badge">Sentados</span>
+                            ) : (
+                              <button
+                                className="sala-confirm-arrival"
+                                onClick={() => confirmArrival(r.id)}
+                              >
+                                Confirmar llegada
+                              </button>
+                            )}
+                            <button
+                              className="sala-unassign"
+                              onClick={() => unassignReservation(r.id)}
+                            >
+                              Quitar
+                            </button>
+                          </span>
                         </li>
                       ))}
                     </ul>

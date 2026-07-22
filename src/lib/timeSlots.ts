@@ -1,6 +1,13 @@
-function toMinutes(time: string): number {
+export function toMinutes(time: string): number {
   const [hours, minutes] = time.split(':').map(Number)
   return hours * 60 + minutes
+}
+
+/** Dos reservas de `durationMinutes` de duración se solapan si sus franjas se cruzan. */
+export function timesOverlap(timeA: string, timeB: string, durationMinutes: number): boolean {
+  const a = toMinutes(timeA)
+  const b = toMinutes(timeB)
+  return a < b + durationMinutes && b < a + durationMinutes
 }
 
 function toTimeString(minutes: number): string {
