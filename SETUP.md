@@ -20,12 +20,18 @@
 - ✅ Sala: no se puede asignar una mesa a una reserva si ya tiene otra reserva activa en un horario que se solapa (según la duración media de una comida); antes no había ningún aviso ni bloqueo.
 - ✅ Sala: aviso "⚠ ninguna mesa individual llega a Np" en la lista de reservas sin mesa, cuando el grupo es más grande que cualquier mesa activa configurada (para unir mesas o llamar al cliente).
 - ✅ Sala: botón "Confirmar llegada" en el panel de la mesa activa, para que el metre marque la asistencia sin pasar por el desplegable de estado del Dashboard.
+- ✅ Dashboard: aviso ⚠ en "Personas" cuando una reserva pendiente/confirmada supera el aforo de cualquier mesa activa (se acepta igualmente, para que el restaurante llame y decida cómo acomodarla).
+- ✅ Página pública `/:slug/reservar/gestionar`: el cliente busca su reserva con teléfono + fecha (sin enlace exclusivo ni email/SMS) y puede cancelarla o cambiar fecha/hora/personas. Enlazada desde la pantalla de "reserva enviada" y desde el propio formulario.
 
 ## Pendiente ahora
 
 ### Ejecutar `0014_reservation_duration.sql`
 
 Añade `restaurants.reservation_duration_minutes` (por defecto 120). Se usa para calcular, junto con el horario de cada día (pestaña **Horarios** del CRM), el último hueco reservable online antes del cierre, y para generar los huecos de media hora del formulario público de reserva. Después de ejecutarla, entra en **Horarios** y confirma/ajusta la "Duración media de una reserva" para Asador Gonsastrez (por defecto queda en 2h).
+
+### Ejecutar `0016_manage_own_reservation.sql`
+
+Añade las funciones que usa la página `/:slug/reservar/gestionar` para buscar, cancelar y modificar una reserva por teléfono + fecha. Sin esto, esa página dará error al buscar.
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 

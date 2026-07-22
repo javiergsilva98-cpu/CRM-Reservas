@@ -10,6 +10,15 @@
   text-align: center;
 }
 
+.reservation-manage-link {
+  display: block;
+  text-align: center;
+  margin: -1.5rem 0 2rem;
+  font-size: 0.85rem;
+  color: #6b5643;
+  text-decoration: underline;
+}
+
 .reservation-page-message {
   min-height: 60vh;
   display: flex;

@@ -58,3 +58,13 @@
 .status-cancelled { background: #f3d4d4; }
 .status-seated { background: #cfe8f3; }
 .status-no_show { background: #e6e0da; }
+
+.dashboard-row-warning {
+  background: #fdf6ea;
+}
+
+.dashboard-capacity-warning {
+  margin-left: 0.35rem;
+  color: #9a6a1e;
+  cursor: help;
+}

@@ -10,6 +10,9 @@ const RestaurantPage = lazy(() =>
 const ReservationPage = lazy(() =>
   import('./pages/ReservationPage').then((m) => ({ default: m.ReservationPage })),
 )
+const ManageReservationPage = lazy(() =>
+  import('./pages/ManageReservationPage').then((m) => ({ default: m.ManageReservationPage })),
+)
 const SuperAdminLoginPage = lazy(() =>
   import('./pages/admin/LoginPage').then((m) => ({ default: m.LoginPage })),
 )
@@ -123,6 +126,7 @@ function App() {
             }
           />
 
+          <Route path="/:slug/reservar/gestionar" element={<ManageReservationPage />} />
           <Route path="/:slug/reservar" element={<ReservationPage />} />
           <Route path="/:slug" element={<RestaurantPage />} />
         </Routes>

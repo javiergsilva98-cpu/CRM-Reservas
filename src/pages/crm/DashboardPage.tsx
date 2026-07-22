@@ -16,12 +16,26 @@ export function DashboardPage() {
     useRestaurant(slug ?? '')
 
   const [reservations, setReservations] = useState<ReservationWithCustomer[]>([])
+  const [maxTableCapacity, setMaxTableCapacity] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (restaurant) ensureMembership(restaurant.id).then(() => loadReservations(restaurant.id))
+    if (restaurant) {
+      ensureMembership(restaurant.id).then(() => loadReservations(restaurant.id))
+      loadMaxTableCapacity(restaurant.id)
+    }
   }, [restaurant])
+
+  async function loadMaxTableCapacity(restaurantId: string) {
+    const { data } = await supabase
+      .from('restaurant_tables')
+      .select('capacity')
+      .eq('restaurant_id', restaurantId)
+      .eq('active', true)
+
+    setMaxTableCapacity((data ?? []).reduce((max, t) => Math.max(max, t.capacity), 0))
+  }
 
   async function ensureMembership(restaurantId: string) {
     const {
@@ -109,8 +123,13 @@ export function DashboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {reservations.map((r) => (
-                  <tr key={r.id}>
+                {reservations.map((r) => {
+                  const needsReview =
+                    maxTableCapacity > 0 &&
+                    r.party_size > maxTableCapacity &&
+                    (r.status === 'pending' || r.status === 'confirmed')
+                  return (
+                  <tr key={r.id} className={needsReview ? 'dashboard-row-warning' : ''}>
                     <td>{r.reservation_date}</td>
                     <td>{r.reservation_time}</td>
                     <td>
@@ -122,7 +141,17 @@ export function DashboardPage() {
                         '—'
                       )}
                     </td>
-                    <td>{r.party_size}</td>
+                    <td>
+                      {r.party_size}
+                      {needsReview && (
+                        <span
+                          className="dashboard-capacity-warning"
+                          title={`Ninguna mesa activa llega a ${r.party_size}p (máx. ${maxTableCapacity}p) — une mesas o llama al cliente`}
+                        >
+                          ⚠
+                        </span>
+                      )}
+                    </td>
                     <td>
                       {r.customers?.phone && <div>{r.customers.phone}</div>}
                       {r.customers?.email && <div>{r.customers.email}</div>}
@@ -150,7 +179,8 @@ export function DashboardPage() {
                       </select>
                     </td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
             </table>
           </div>

@@ -23,3 +23,4 @@ No hay ejecución automática todavía: cuando aparezca un archivo nuevo aquí, 
 | `0013_seed_contact_info.sql` | Dirección y teléfono de ejemplo (placeholder) para Asador Gonsastrez, para que aparezcan al final de la landing | ✅ 2026-07-21 |
 | `0014_reservation_duration.sql` | Columna `restaurants.reservation_duration_minutes` (duración media de una reserva), usada para calcular el último hueco reservable online | ⏳ pendiente |
 | `0015_meta_tags.sql` | Columnas `restaurants.meta_description` y `og_image_url`, usadas por `api/meta.ts` para generar el title/meta description/Open Graph de cada restaurante | ✅ 2026-07-22 |
+| `0016_manage_own_reservation.sql` | Funciones `find_own_reservations`/`cancel_own_reservation`/`modify_own_reservation` (security definer, identificación por teléfono + fecha) para que el cliente gestione su propia reserva desde `/:slug/reservar/gestionar` sin login ni enlace exclusivo | ⏳ pendiente |

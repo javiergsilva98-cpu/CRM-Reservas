@@ -158,6 +158,9 @@ export function ReservationPage() {
             {restaurant.name} el {formatDateSummary(reservationDate)} a las {reservationTime}. Te
             confirmaremos la reserva lo antes posible.
           </p>
+          <Link to={`/${slug}/reservar/gestionar`} className="reservation-success-link">
+            ¿Necesitas cambiarla o cancelarla? Gestiónala aquí
+          </Link>
           <Link to={`/${slug}`} className="reservation-success-link">
             Volver al inicio
           </Link>
@@ -169,6 +172,9 @@ export function ReservationPage() {
   return (
     <main className="reservation-page">
       <h1>Reservar mesa en {restaurant.name}</h1>
+      <Link to={`/${slug}/reservar/gestionar`} className="reservation-manage-link">
+        ¿Ya tienes una reserva? Gestiónala aquí
+      </Link>
 
       <form onSubmit={handleSubmit} className="reservation-accordion">
         <AccordionStep

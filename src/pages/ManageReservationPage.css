@@ -1,0 +1,100 @@
+.manage-subtitle {
+  text-align: center;
+  color: #6b5643;
+  margin: -1.25rem 0 2rem;
+}
+
+.manage-lookup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-message {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #2c1b10;
+  background: #eef7ee;
+  border: 1px solid #8fbf8f;
+  border-radius: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  margin: 0 0 1.1rem;
+  font-size: 0.9rem;
+}
+
+.manage-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.manage-result-item {
+  border: 1px solid #cbb9a3;
+  border-radius: 0.6rem;
+  padding: 1rem 1.1rem;
+  background: #fff;
+}
+
+.manage-result-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.85rem;
+}
+
+.manage-result-summary span {
+  font-size: 0.85rem;
+  color: #6b5643;
+}
+
+.manage-result-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.manage-result-actions button {
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbb9a3;
+  background: #fff;
+  color: #2c1b10;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.manage-cancel-button {
+  border-color: #d9a5a5 !important;
+  color: #b3261e !important;
+}
+
+.manage-edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-edit-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.manage-edit-actions .accordion-step-next {
+  width: auto;
+  flex: 1;
+}
+
+.manage-cancel-edit {
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.6rem;
+  border: 1px solid #cbb9a3;
+  background: #fff;
+  color: #2c1b10;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
