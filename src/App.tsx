@@ -13,6 +13,15 @@ const ReservationPage = lazy(() =>
 const ManageReservationPage = lazy(() =>
   import('./pages/ManageReservationPage').then((m) => ({ default: m.ManageReservationPage })),
 )
+const AvisoLegalPage = lazy(() =>
+  import('./pages/legal/AvisoLegalPage').then((m) => ({ default: m.AvisoLegalPage })),
+)
+const PrivacidadPage = lazy(() =>
+  import('./pages/legal/PrivacidadPage').then((m) => ({ default: m.PrivacidadPage })),
+)
+const TerminosPage = lazy(() =>
+  import('./pages/legal/TerminosPage').then((m) => ({ default: m.TerminosPage })),
+)
 const SuperAdminLoginPage = lazy(() =>
   import('./pages/admin/LoginPage').then((m) => ({ default: m.LoginPage })),
 )
@@ -49,6 +58,10 @@ function App() {
       <Suspense fallback={<PageFallback />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+
+          <Route path="/legal/aviso-legal" element={<AvisoLegalPage />} />
+          <Route path="/legal/privacidad" element={<PrivacidadPage />} />
+          <Route path="/legal/terminos" element={<TerminosPage />} />
 
           <Route path="/admin/login" element={<SuperAdminLoginPage />} />
           <Route

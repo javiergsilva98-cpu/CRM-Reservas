@@ -220,6 +220,21 @@
   cursor: default;
 }
 
+.reservation-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #6b5643;
+  margin-bottom: 0.85rem;
+  cursor: pointer;
+}
+
+.reservation-consent input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
 .reservation-error {
   color: #b3261e;
   font-size: 0.9rem;

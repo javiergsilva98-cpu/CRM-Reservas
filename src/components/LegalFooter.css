@@ -1,0 +1,12 @@
+.legal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem 1.5rem 3rem;
+  font-size: 0.8rem;
+}
+
+.legal-footer a {
+  color: #6b5643;
+  text-decoration: underline;
+}

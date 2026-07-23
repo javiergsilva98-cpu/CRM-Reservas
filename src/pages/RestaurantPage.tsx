@@ -4,6 +4,7 @@ import { ScrollScrubVideo } from '../components/ScrollScrubVideo'
 import { MenuSection } from '../components/MenuSection'
 import { RecommendedCarousel } from '../components/RecommendedCarousel'
 import { PageFallback } from '../components/PageFallback'
+import { LegalFooter } from '../components/LegalFooter'
 import { platosRecomendados } from '../data/recomendados'
 import './RestaurantPage.css'
 
@@ -14,15 +15,19 @@ export function RestaurantPage() {
   if (error) {
     console.error(error)
     return (
-      <main className="restaurant-page-message">
-        <h1>No hemos encontrado este restaurante</h1>
-        <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
-      </main>
+      <>
+        <main className="restaurant-page-message">
+          <h1>No hemos encontrado este restaurante</h1>
+          <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
+        </main>
+        <LegalFooter />
+      </>
     )
   }
   if (loading || !restaurant) return <PageFallback />
 
   return (
+    <>
     <main>
       <ScrollScrubVideo
         videoSrc="/video/hero-asador-gonsastrez-v3.mp4"
@@ -79,5 +84,7 @@ export function RestaurantPage() {
         </Link>
       </ScrollScrubVideo>
     </main>
+    <LegalFooter />
+    </>
   )
 }

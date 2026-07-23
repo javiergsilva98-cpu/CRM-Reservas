@@ -22,6 +22,9 @@
 - ✅ Sala: botón "Confirmar llegada" en el panel de la mesa activa, para que el metre marque la asistencia sin pasar por el desplegable de estado del Dashboard.
 - ✅ Dashboard: aviso ⚠ en "Personas" cuando una reserva pendiente/confirmada supera el aforo de cualquier mesa activa (se acepta igualmente, para que el restaurante llame y decida cómo acomodarla).
 - ✅ Página pública `/:slug/reservar/gestionar`: el cliente busca su reserva con teléfono + fecha (sin enlace exclusivo ni email/SMS) y puede cancelarla o cambiar fecha/hora/personas. Enlazada desde la pantalla de "reserva enviada" y desde el propio formulario.
+- ✅ Legal y RGPD: páginas de Aviso legal, Política de privacidad y Términos (`/legal/...`), enlazadas desde un footer en todas las páginas públicas. Checkbox obligatorio de aceptación de la política de privacidad y checkbox opcional de consentimiento de marketing en el formulario de reserva, que ahora se guarda en `customers.gdpr_marketing`/`gdpr_consent_at`.
+
+⚠️ **Importante sobre lo legal**: las páginas usan datos de identidad de ejemplo (marcados en amarillo, en `src/legal/legalConfig.ts`): razón social, NIF/CIF, dirección y email de contacto. Hay que rellenarlos con los datos fiscales reales antes de operar comercialmente. Este texto es una plantilla estándar razonable pero no sustituye la revisión de un abogado antes del lanzamiento comercial real, especialmente en la parte de responsable/encargado del tratamiento entre la plataforma y cada restaurante.
 
 ## Pendiente ahora
 
@@ -32,6 +35,14 @@ Añade `restaurants.reservation_duration_minutes` (por defecto 120). Se usa para
 ### Ejecutar `0016_manage_own_reservation.sql`
 
 Añade las funciones que usa la página `/:slug/reservar/gestionar` para buscar, cancelar y modificar una reserva por teléfono + fecha. Sin esto, esa página dará error al buscar.
+
+### Ejecutar `0017_customer_marketing_consent.sql`
+
+Sustituye `find_or_create_customer` para que acepte el consentimiento de marketing. Sin esto, el formulario público de reserva dará error al enviar (la función antigua de 4 parámetros se borra en esta migración).
+
+### Rellenar `src/legal/legalConfig.ts`
+
+Con la razón social/nombre, NIF/CIF, dirección fiscal y email de contacto reales, antes de vender el servicio de verdad.
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 

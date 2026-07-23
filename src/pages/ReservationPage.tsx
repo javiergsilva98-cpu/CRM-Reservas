@@ -6,6 +6,7 @@ import { useRestaurant } from '../lib/useRestaurant'
 import { generateTimeSlots } from '../lib/timeSlots'
 import { AccordionStep } from '../components/AccordionStep'
 import { PageFallback } from '../components/PageFallback'
+import { LegalFooter } from '../components/LegalFooter'
 import {
   CalendarIcon,
   CheckIcon,
@@ -56,6 +57,8 @@ export function ReservationPage() {
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
   const [notes, setNotes] = useState('')
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
+  const [marketingConsent, setMarketingConsent] = useState(false)
 
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -85,7 +88,7 @@ export function ReservationPage() {
       : []
 
   const dateTimeValid = Boolean(reservationDate && reservationTime)
-  const contactValid = Boolean(customerName.trim() && customerPhone.trim())
+  const contactValid = Boolean(customerName.trim() && customerPhone.trim() && privacyAccepted)
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
@@ -101,6 +104,7 @@ export function ReservationPage() {
         p_first_name: customerName,
         p_phone: customerPhone || null,
         p_email: customerEmail || null,
+        p_gdpr_marketing: marketingConsent,
       },
     )
 
@@ -137,39 +141,46 @@ export function ReservationPage() {
   if (error) {
     console.error(error)
     return (
-      <main className="reservation-page-message">
-        <h1>No hemos encontrado este restaurante</h1>
-        <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
-      </main>
+      <>
+        <main className="reservation-page-message">
+          <h1>No hemos encontrado este restaurante</h1>
+          <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
+        </main>
+        <LegalFooter />
+      </>
     )
   }
   if (loading || !restaurant) return <PageFallback />
 
   if (submitted) {
     return (
-      <main className="reservation-page">
-        <div className="reservation-success">
-          <span className="reservation-success-icon">
-            <CheckIcon />
-          </span>
-          <h1>¡Reserva enviada!</h1>
-          <p>
-            Hemos recibido tu solicitud para {partySize} {partySize === 1 ? 'persona' : 'personas'} en{' '}
-            {restaurant.name} el {formatDateSummary(reservationDate)} a las {reservationTime}. Te
-            confirmaremos la reserva lo antes posible.
-          </p>
-          <Link to={`/${slug}/reservar/gestionar`} className="reservation-success-link">
-            ¿Necesitas cambiarla o cancelarla? Gestiónala aquí
-          </Link>
-          <Link to={`/${slug}`} className="reservation-success-link">
-            Volver al inicio
-          </Link>
-        </div>
-      </main>
+      <>
+        <main className="reservation-page">
+          <div className="reservation-success">
+            <span className="reservation-success-icon">
+              <CheckIcon />
+            </span>
+            <h1>¡Reserva enviada!</h1>
+            <p>
+              Hemos recibido tu solicitud para {partySize} {partySize === 1 ? 'persona' : 'personas'} en{' '}
+              {restaurant.name} el {formatDateSummary(reservationDate)} a las {reservationTime}. Te
+              confirmaremos la reserva lo antes posible.
+            </p>
+            <Link to={`/${slug}/reservar/gestionar`} className="reservation-success-link">
+              ¿Necesitas cambiarla o cancelarla? Gestiónala aquí
+            </Link>
+            <Link to={`/${slug}`} className="reservation-success-link">
+              Volver al inicio
+            </Link>
+          </div>
+        </main>
+        <LegalFooter />
+      </>
     )
   }
 
   return (
+    <>
     <main className="reservation-page">
       <h1>Reservar mesa en {restaurant.name}</h1>
       <Link to={`/${slug}/reservar/gestionar`} className="reservation-manage-link">
@@ -372,6 +383,31 @@ export function ReservationPage() {
             </span>
           </label>
 
+          <label className="reservation-consent">
+            <input
+              type="checkbox"
+              required
+              checked={privacyAccepted}
+              onChange={(e) => setPrivacyAccepted(e.target.checked)}
+            />
+            <span>
+              He leído y acepto la{' '}
+              <Link to="/legal/privacidad" target="_blank" rel="noopener noreferrer">
+                Política de Privacidad
+              </Link>{' '}
+              *
+            </span>
+          </label>
+
+          <label className="reservation-consent">
+            <input
+              type="checkbox"
+              checked={marketingConsent}
+              onChange={(e) => setMarketingConsent(e.target.checked)}
+            />
+            <span>Quiero recibir ofertas y novedades de {restaurant.name} por email o teléfono</span>
+          </label>
+
           {submitError && <p className="reservation-error">{submitError}</p>}
 
           <button type="submit" className="accordion-step-next" disabled={submitting || !contactValid}>
@@ -379,6 +415,8 @@ export function ReservationPage() {
           </button>
         </AccordionStep>
       </form>
-    </main>
+      </main>
+      <LegalFooter />
+    </>
   )
 }

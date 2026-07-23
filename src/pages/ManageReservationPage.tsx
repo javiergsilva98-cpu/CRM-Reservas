@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useRestaurant } from '../lib/useRestaurant'
 import { generateTimeSlots } from '../lib/timeSlots'
 import { PageFallback } from '../components/PageFallback'
+import { LegalFooter } from '../components/LegalFooter'
 import { CalendarIcon, CheckIcon, ClockIcon, PartyIcon, PhoneIcon } from '../components/icons'
 import type { RestaurantHours } from '../types'
 import './ReservationPage.css'
@@ -167,15 +168,19 @@ export function ManageReservationPage() {
   if (error) {
     console.error(error)
     return (
-      <main className="reservation-page-message">
-        <h1>No hemos encontrado este restaurante</h1>
-        <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
-      </main>
+      <>
+        <main className="reservation-page-message">
+          <h1>No hemos encontrado este restaurante</h1>
+          <p>Comprueba el enlace o vuelve a intentarlo en unos minutos.</p>
+        </main>
+        <LegalFooter />
+      </>
     )
   }
   if (loading || !restaurant) return <PageFallback />
 
   return (
+    <>
     <main className="reservation-page manage-reservation-page">
       <h1>Gestionar tu reserva</h1>
       <p className="manage-subtitle">{restaurant.name}</p>
@@ -325,5 +330,7 @@ export function ManageReservationPage() {
 
       {actionError && !editingId && <p className="reservation-error">{actionError}</p>}
     </main>
+    <LegalFooter />
+    </>
   )
 }
