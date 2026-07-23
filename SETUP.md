@@ -26,6 +26,7 @@
 
 ⚠️ **Importante sobre lo legal**: las páginas usan datos de identidad de ejemplo (marcados en amarillo, en `src/legal/legalConfig.ts`): razón social, NIF/CIF, dirección y email de contacto. Hay que rellenarlos con los datos fiscales reales antes de operar comercialmente. Este texto es una plantilla estándar razonable pero no sustituye la revisión de un abogado antes del lanzamiento comercial real, especialmente en la parte de responsable/encargado del tratamiento entre la plataforma y cada restaurante.
 - ✅ Protección antiabuso: campo señuelo (honeypot) + tiempo mínimo de envío en el formulario público de reserva (bloquea bots simples sin decirles por qué falló). A nivel de base de datos: máximo 3 reservas seguidas por cliente en 15 minutos, y máximo 10 intentos de búsqueda en 15 minutos en la autogestión de reservas (evita probar teléfonos/fechas al azar). No se puede saltar llamando directamente a la API.
+- ✅ Monitorización de errores: `@sentry/react` capturando errores no controlados (los que llegan al `ErrorBoundary`, más los globales de JS/promesas que captura Sentry automáticamente). Desactivado por completo si no hay `VITE_SENTRY_DSN` — en local, sin cuenta de Sentry, no hace nada.
 
 ## Pendiente ahora
 
@@ -48,6 +49,18 @@ Con la razón social/nombre, NIF/CIF, dirección fiscal y email de contacto real
 ### Ejecutar `0018_rate_limiting.sql`
 
 Añade el límite de reservas seguidas y la tabla de intentos de búsqueda de la autogestión de reservas (sustituye `find_own_reservations` de la migración `0016` por una versión con límite; misma firma, no rompe nada).
+
+### Activar Sentry (monitorización de errores)
+
+El código ya está listo, solo falta la cuenta:
+
+1. Crea una cuenta gratis en [sentry.io](https://sentry.io) (el plan free cubre de sobra para empezar).
+2. Crea un proyecto nuevo, plataforma **React**.
+3. Copia el DSN que te da (una URL tipo `https://xxxx@xxxx.ingest.sentry.io/xxxx`).
+4. Añade `VITE_SENTRY_DSN=<ese DSN>` a tu `.env.local` (para verlo en local si quieres probarlo) y como variable de entorno en Vercel (Project Settings → Environment Variables), para que funcione en producción.
+5. Vuelve a desplegar. A partir de ahí, cualquier error no controlado en producción aparecerá en el dashboard de Sentry.
+
+Sin este DSN, todo sigue funcionando exactamente igual (Sentry simplemente no hace nada) — no es bloqueante, pero sin él no te enteras si algo se rompe en producción salvo que un cliente te avise.
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 
