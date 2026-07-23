@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
@@ -39,9 +39,14 @@ function dayOfWeekFor(date: string) {
   return new Date(year, month - 1, day).getDay()
 }
 
+const MIN_SUBMIT_MS = 3000
+
 export function ReservationPage() {
   const { slug } = useParams<{ slug: string }>()
   const { restaurant, loading, error } = useRestaurant(slug ?? '')
+
+  const formLoadedAt = useRef(Date.now())
+  const [website, setWebsite] = useState('')
 
   const [activeStep, setActiveStep] = useState(0)
 
@@ -93,6 +98,14 @@ export function ReservationPage() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     if (!restaurant || !dateTimeValid || !contactValid) return
+
+    // Protección anti-bot silenciosa: un campo señuelo relleno o un envío
+    // sospechosamente rápido no delatan el motivo, para no enseñar al bot
+    // a evitarlo.
+    if (website.trim() || Date.now() - formLoadedAt.current < MIN_SUBMIT_MS) {
+      setSubmitError('No hemos podido enviar tu reserva. Inténtalo de nuevo en unos minutos.')
+      return
+    }
 
     setSubmitting(true)
     setSubmitError(null)
@@ -188,6 +201,16 @@ export function ReservationPage() {
       </Link>
 
       <form onSubmit={handleSubmit} className="reservation-accordion">
+        <input
+          type="text"
+          name="website"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+          className="reservation-honeypot"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+        />
         <AccordionStep
           index={0}
           title="¿Cuántos sois?"

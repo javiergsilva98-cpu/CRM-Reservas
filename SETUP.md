@@ -25,6 +25,7 @@
 - ✅ Legal y RGPD: páginas de Aviso legal, Política de privacidad y Términos (`/legal/...`), enlazadas desde un footer en todas las páginas públicas. Checkbox obligatorio de aceptación de la política de privacidad y checkbox opcional de consentimiento de marketing en el formulario de reserva, que ahora se guarda en `customers.gdpr_marketing`/`gdpr_consent_at`.
 
 ⚠️ **Importante sobre lo legal**: las páginas usan datos de identidad de ejemplo (marcados en amarillo, en `src/legal/legalConfig.ts`): razón social, NIF/CIF, dirección y email de contacto. Hay que rellenarlos con los datos fiscales reales antes de operar comercialmente. Este texto es una plantilla estándar razonable pero no sustituye la revisión de un abogado antes del lanzamiento comercial real, especialmente en la parte de responsable/encargado del tratamiento entre la plataforma y cada restaurante.
+- ✅ Protección antiabuso: campo señuelo (honeypot) + tiempo mínimo de envío en el formulario público de reserva (bloquea bots simples sin decirles por qué falló). A nivel de base de datos: máximo 3 reservas seguidas por cliente en 15 minutos, y máximo 10 intentos de búsqueda en 15 minutos en la autogestión de reservas (evita probar teléfonos/fechas al azar). No se puede saltar llamando directamente a la API.
 
 ## Pendiente ahora
 
@@ -43,6 +44,10 @@ Sustituye `find_or_create_customer` para que acepte el consentimiento de marketi
 ### Rellenar `src/legal/legalConfig.ts`
 
 Con la razón social/nombre, NIF/CIF, dirección fiscal y email de contacto reales, antes de vender el servicio de verdad.
+
+### Ejecutar `0018_rate_limiting.sql`
+
+Añade el límite de reservas seguidas y la tabla de intentos de búsqueda de la autogestión de reservas (sustituye `find_own_reservations` de la migración `0016` por una versión con límite; misma firma, no rompe nada).
 
 ## Decisiones tomadas sobre la especificación grande (2026-07-21)
 
